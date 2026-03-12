@@ -542,3 +542,18 @@ th {
   .main-panel { inset: 0 40px 50px 0; }
   .side-panel { width: 180px; }
 }
+.icon-card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-image {
+  max-width: 90px;
+  max-height: 90px;
+}

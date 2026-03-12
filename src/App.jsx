@@ -9,7 +9,11 @@ const modules = [
     duration: 'ca. 120 min',
     description:
       'Eine geführte Schritt-für-Schritt-Anleitung für den Aufbau einer Holzständerwand inklusive Vormontage, Beplankung, Befestigung, Dämmung und Sicherung.',
-    tools: ['Wasserwaage', 'Leiter', 'Hebebühne', 'Bleistift', 'Akkuschrauber', 'Zwinge'],
+    tools: [
+  { name: 'Wasserwaage', icon: '/icons/wasserwaage.jpg' },
+  { name: 'Leiter', icon: '/icons/leiter.jpg' },
+  { name: 'Nagelpistole', icon: '/icons/nagelpistole.jpg' },
+],
     materials: [
       { key: 'A', name: 'Schraube', spec: '80 mm × 160 mm', qty: 15, price: '0,70 €', total: '10,50 €' },
       { key: 'B', name: 'Ständer', spec: '160 mm × 80 mm', qty: 5, price: '23,17 €', total: '115,85 €' },
@@ -288,7 +292,9 @@ function GuidePage({ module, onBack }) {
           <h3>Werkzeuge</h3>
           <div className="tool-list">
             {module.tools.map((tool) => (
-              <span key={tool} className="tool-pill">{tool}</span>
+              <div key={tool.name} className="icon-card">
+  <img src={tool.icon} alt={tool.name} className="icon-image" />
+</div>
             ))}
           </div>
         </article>
