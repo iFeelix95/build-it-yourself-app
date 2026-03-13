@@ -348,18 +348,6 @@ h4 { font-size: 1.15rem; margin-bottom: 10px; }
   padding: 24px;
 }
 
-.tool-list,
-.material-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.material-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
 .material-tile {
   min-height: 112px;
   padding: 16px;
@@ -505,9 +493,6 @@ th {
   .section-header,
   .guide-hero,
   .module-grid,
-  .material-grid {
-    grid-template-columns: 1fr !important;
-  }
 
   .hero-card {
     min-height: auto;
@@ -543,17 +528,168 @@ th {
   .side-panel { width: 180px; }
 }
 .icon-card {
-  background: white;
-  border-radius: 14px;
-  padding: 16px;
-  width: 120px;
-  height: 120px;
+  background: #ffffff;
+  border: 2px solid rgba(31, 183, 233, 0.18);
+  border-radius: 22px;
+  padding: 18px;
+  min-height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.icon-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.1);
+  border-color: rgba(31, 183, 233, 0.45);
 }
 
 .icon-image {
   max-width: 90px;
   max-height: 90px;
+}
+
+.material-icon-card {
+  background: #ffffff;
+  border: 2px solid rgba(31, 183, 233, 0.18);
+  border-radius: 22px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  cursor: pointer;
+  position: relative;
+}
+
+.material-icon-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.1);
+  border-color: rgba(31, 183, 233, 0.45);
+}
+
+.material-icon-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.material-A .material-icon-image {
+  max-height: 170px;
+}
+
+.material-B .material-icon-image {
+  max-height: 195px;
+}
+
+.material-C .material-icon-image {
+  max-height: 205px;
+}
+
+.material-D .material-icon-image {
+  max-height: 210px;
+}
+
+.material-E .material-icon-image {
+  max-height: 150px;
+}
+
+.material-F .material-icon-image {
+  max-height: 195px;
+}
+
+.material-G .material-icon-image {
+  max-height: 185px;
+}
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 22px;
+}
+.tool-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 18px;
+}
+.material-icon-card {
+  position: relative;
+}
+
+.material-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  transform: translateX(-50%) translateY(6px);
+  background: #ffffff;
+  color: #101214;
+  border: 1px solid rgba(31, 183, 233, 0.22);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+  padding: 12px 14px;
+  min-width: 170px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 20;
+  text-align: left;
+}
+
+.material-tooltip strong {
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.material-tooltip span {
+  font-size: 13px;
+  color: #5d676f;
+  line-height: 1.35;
+}
+
+.material-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: #ffffff transparent transparent transparent;
+}
+
+.material-icon-card:hover .material-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.cart-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(31, 183, 233, 0.24);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  z-index: 50;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cart-button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.16);
+  background: #ffffff;
 }

@@ -14,15 +14,65 @@ const modules = [
   { name: 'Leiter', icon: '/icons/leiter.jpg' },
   { name: 'Nagelpistole', icon: '/icons/nagelpistole.jpg' },
 ],
-    materials: [
-      { key: 'A', name: 'Schraube', spec: '80 mm × 160 mm', qty: 15, price: '0,70 €', total: '10,50 €' },
-      { key: 'B', name: 'Ständer', spec: '160 mm × 80 mm', qty: 5, price: '23,17 €', total: '115,85 €' },
-      { key: 'C', name: 'Rähm/Schwelle', spec: '160 mm × 80 mm', qty: 2, price: '23,17 €', total: '46,34 €' },
-      { key: 'D', name: 'OSB-Platte', spec: '1,5 cm', qty: 4, price: '26,97 €', total: '107,88 €' },
-      { key: 'E', name: 'Schraube', spec: '35 mm × 40 mm', qty: 68, price: '0,04 €', total: '2,72 €' },
-      { key: 'F', name: 'Zugverankerung', spec: 'Metallwinkel', qty: 1, price: '7,42 €', total: '7,42 €' },
-      { key: 'G', name: 'Dämmplatte', spec: 'Mineralwolle', qty: 4, price: '35,39 €', total: '141,56 €' },
-    ],
+materials: [
+  {
+    key: 'A',
+    name: 'Schraube',
+    icon: '/icons/schraube_80_160.png',
+    qty: 15,
+    price: '0,70 €',
+    total: '10,50 €',
+  },
+{
+  key: 'B',
+  name: 'Ständer',
+  icon: '/icons/stuetze.png',
+  qty: 5,
+  price: '23,17 €',
+  total: '115,85 €',
+},
+{
+  key: 'C',
+  name: 'Rähm/Schwelle',
+  icon: '/icons/balken.png',
+  qty: 2,
+  price: '23,17 €',
+  total: '46,34 €',
+  shopUrl: "https://www.holzland.de/p/konstruktionsvollholz-fichte-nsi-nicht-sichtbarer-einbau-c24/HL1634565/?itemId=7000537361&pmzr=10133",
+},
+  {
+    key: 'D',
+    name: 'OSB-Platte',
+    icon: '/icons/osb.png',
+    qty: 4,
+    price: '26,97 €',
+    total: '107,88 €',
+  },
+  {
+    key: 'E',
+    name: 'Schraube',
+    icon: '/icons/schraube_35_40.png',
+    qty: 68,
+    price: '0,04 €',
+    total: '2,72 €',
+  },
+  {
+    key: 'F',
+    name: 'Zugverankerung',
+    icon: '/icons/zugverankerung.png',
+    qty: 1,
+    price: '7,42 €',
+    total: '7,42 €',
+  },
+  {
+    key: 'G',
+    name: 'Dämmplatte',
+    icon: '/icons/daemmplatte.png',
+    qty: 4,
+    price: '35,39 €',
+    total: '141,56 €',
+  },
+],
     steps: [
       {
         no: '01',
@@ -300,48 +350,45 @@ function GuidePage({ module, onBack }) {
         </article>
 
         <article className="overview-card product-card">
-          <h3>Verwendete Materialien</h3>
-          <div className="material-grid">
-            {module.materials.map((item) => (
-              <div key={item.key} className="material-tile">
-                <span className="material-key">{item.key}</span>
-                <strong>{item.name}</strong>
-                <small>{item.spec}</small>
-              </div>
-            ))}
-          </div>
+      <h3>Verwendete Materialien</h3>
+<div className="material-grid">
+  {module.materials.map((item) => (
+    <div
+      key={item.key}
+      className={`material-icon-card material-${item.key}`}
+    >
+  {item.shopUrl && (
+  <a
+    href={item.shopUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="cart-button"
+    aria-label={`${item.name} kaufen`}
+    onClick={(event) => event.stopPropagation()}
+  >
+    🛒
+  </a>
+)}
+
+      <img
+        src={item.icon}
+        alt={item.name}
+        className="material-icon-image"
+      />
+
+      <div className="material-tooltip">
+        <strong>{item.name}</strong>
+        <span>Menge: {item.qty}</span>
+        <span>Preis/Stk: {item.price}</span>
+        <span>Gesamt: {item.total}</span>
+      </div>
+    </div>
+  ))}
+</div>
         </article>
       </div>
 
-      <article className="cost-card">
-        <div className="cost-card-head">
-          <h3>Kurzüberblick Materialliste</h3>
-          <span>Gesamt {totalCost}</span>
-        </div>
-        <div className="cost-table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Bauteil</th>
-                <th>Menge</th>
-                <th>€/Stk</th>
-                <th>Gesamt</th>
-              </tr>
-            </thead>
-            <tbody>
-              {module.materials.map((item) => (
-                <tr key={item.key}>
-                  <td>{item.key} – {item.name}</td>
-                  <td>{item.qty}</td>
-                  <td>{item.price}</td>
-                  <td>{item.total}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </article>
-
+  
       <div className="step-stack">
         {module.steps.map((step) => (
           <article key={step.no} className="step-card">
