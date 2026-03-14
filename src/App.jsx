@@ -348,8 +348,26 @@ function GuidePage({ module, onBack }) {
           <div className="tool-list">
             {module.tools.map((tool) => (
               <div key={tool.name} className="icon-card">
-  <img src={tool.icon} alt={tool.name} className="icon-image" />
-</div>
+                {tool.name === 'Nagelpistole' && (
+                  <a
+                    href="https://www.boels.com/de-de/mieten/schnurloser-gastacker/p/11289"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cart-button"
+                    aria-label="Nagelpistole kaufen"
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    🛒
+                  </a>
+                )}
+                <img src={tool.icon} alt={tool.name} className="icon-image" />
+                {tool.name === 'Nagelpistole' && (
+                  <div className="tool-tooltip">
+                    Nagelpistole – wird verwendet, um OSB-Platten und Holzverbindungen
+                    schnell und präzise zu befestigen.
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </article>
