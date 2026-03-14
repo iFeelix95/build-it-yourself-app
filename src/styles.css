@@ -356,8 +356,35 @@ h4 {
   border-color: rgba(31, 183, 233, 0.3);
 }
 
+.module-card--static {
+  cursor: default;
+}
+
+.module-card--static:hover {
+  transform: none;
+  box-shadow: var(--shadow);
+  border-color: rgba(31, 183, 233, 0.14);
+}
+
 .module-card--muted {
   opacity: 0.82;
+}
+
+.preview-card {
+  cursor: pointer;
+  border: 1px solid rgba(31, 183, 233, 0.14);
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.preview-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 36px rgba(15, 23, 42, 0.1);
+  border-color: rgba(31, 183, 233, 0.3);
+}
+
+.preview-card:hover .module-preview-image {
+  filter: drop-shadow(0 10px 18px rgba(31, 183, 233, 0.18));
 }
 
 .module-tag {

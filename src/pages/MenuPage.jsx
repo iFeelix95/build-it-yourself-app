@@ -21,7 +21,8 @@ export default function MenuPage({ onOpenModule }) {
       </div>
 
       {Object.entries(groupedModules).map(([category, items]) => {
-        const isWallSection = category === 'Wände'
+        const wallPreviewModule = items.find((module) => module.id === 'w4')
+        const isWallSection = Boolean(wallPreviewModule)
 
         return (
           <div key={category} className="category-block">
@@ -43,12 +44,13 @@ export default function MenuPage({ onOpenModule }) {
               >
                 {items.map((module) => {
                   const isWallModule = isWallSection && module.id === 'w4'
+                  const CardTag = isWallModule ? 'article' : 'button'
 
                   return (
-                    <button
+                    <CardTag
                       key={module.id}
-                      className={`module-card ${module.placeholder ? 'module-card--muted' : ''}`}
-                      onClick={() => onOpenModule(module)}
+                      className={`module-card ${isWallModule ? 'module-card--static' : ''} ${module.placeholder ? 'module-card--muted' : ''}`}
+                      {...(!isWallModule ? { type: 'button', onClick: () => onOpenModule(module) } : {})}
                       style={
                         isWallModule
                           ? {
@@ -59,6 +61,7 @@ export default function MenuPage({ onOpenModule }) {
                               alignItems: 'stretch',
                               justifyContent: 'flex-start',
                               gap: '14px',
+                              cursor: 'default',
                             }
                           : undefined
                       }
@@ -81,18 +84,22 @@ export default function MenuPage({ onOpenModule }) {
                           <span>…</span>
                         </div>
                       ) : null}
-                    </button>
+                    </CardTag>
                   )
                 })}
               </div>
-              {isWallSection && (
-                <article
-                  className="overview-card"
+              {isWallSection && wallPreviewModule && (
+                <button
+                  className="overview-card preview-card"
+                  type="button"
+                  onClick={() => onOpenModule(wallPreviewModule)}
                   style={{
                     minHeight: '360px',
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
+                    textAlign: 'left',
+                    cursor: 'pointer',
                   }}
                 >
                   <h3>Bauteilvorschau</h3>
@@ -105,6 +112,7 @@ export default function MenuPage({ onOpenModule }) {
                     }}
                   >
                     <img
+                      className="module-preview-image"
                       src="/images/w4_holzstaenderwand_eg.png"
                       alt="Vorschau des Moduls W4"
                       style={{
@@ -118,7 +126,7 @@ export default function MenuPage({ onOpenModule }) {
                       }}
                     />
                   </div>
-                </article>
+                </button>
               )}
             </div>
           </div>
