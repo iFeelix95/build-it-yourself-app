@@ -1,4 +1,6 @@
+
 import { useMemo, useState } from 'react'
+import ModelViewer from './components/ModelViewer'
 
 const modules = [
   {
@@ -222,6 +224,7 @@ function LandingPage({ onStart }) {
           <button className="primary-btn" onClick={onStart}>
             Lass uns loslegen
           </button>
+          <ModelViewer />
         </div>
         <div className="hero-visual">
           <div className="mock-card floating-card main-panel">
@@ -264,6 +267,7 @@ function MenuPage({ onOpenModule }) {
             <h3>{category}</h3>
             <span>{items.length} Modul{items.length > 1 ? 'e' : ''}</span>
           </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start' }}>
           <div className="module-grid">
             {items.map((module) => (
               <button
@@ -290,6 +294,7 @@ function MenuPage({ onOpenModule }) {
               </button>
             ))}
           </div>
+        </div>
         </div>
       ))}
     </section>
