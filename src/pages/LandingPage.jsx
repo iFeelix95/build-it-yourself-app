@@ -1,5 +1,3 @@
-import ModelViewer from '../components/ModelViewer'
-
 function HouseLogo() {
   return (
     <div className="logo-wrap" aria-hidden="true">
@@ -24,24 +22,23 @@ export default function LandingPage({ onStart }) {
             </div>
           </div>
           <p className="lead">
-            Eine digitale Anleitung f\u00fcr dein Selbstbaukonzept im Holzrahmenbau. Die App f\u00fchrt Nutzer
-            verst\u00e4ndlich durch Bauteile, Arbeitsschritte, Materialien und Hinweise zur Ausf\u00fchrung {'\u2013'} klar,
+            Eine digitale Anleitung für dein Selbstbaukonzept im Holzrahmenbau. Die App führt Nutzer
+            verständlich durch Bauteile, Arbeitsschritte, Materialien und Hinweise zur Ausführung – klar,
             visuell und direkt auf der Baustelle nutzbar.
           </p>
           <div className="hero-points">
-            <span>Module ausw\u00e4hlen</span>
+            <span>Module auswählen</span>
             <span>Schritte nachvollziehen</span>
             <span>Selbstbau strukturieren</span>
           </div>
           <button className="primary-btn" onClick={onStart}>
             Lass uns loslegen
           </button>
-          <ModelViewer />
         </div>
         <div className="hero-visual">
           <div className="mock-card floating-card main-panel">
             <h3>Projektlogik</h3>
-            <p>Bauteile nach Bauablauf ausw\u00e4hlen und direkt in die Anleitung springen.</p>
+            <p>Bauteile nach Bauablauf auswählen und direkt in die Anleitung springen.</p>
             <div className="mini-timeline">
               <span>Wand</span>
               <span>Decke</span>

@@ -3,7 +3,7 @@ export default function ModelViewer() {
     <div
       style={{
         width: '100%',
-        height: '220px',
+        height: '420px',
         background: '#ffffff',
         border: '2px solid #1fb7e9',
         borderRadius: '24px',
@@ -14,7 +14,7 @@ export default function ModelViewer() {
         fontSize: '24px',
       }}
     >
-      3D Viewer Placeholder
+      MODEL VIEWER TEST
     </div>
   )
 }
