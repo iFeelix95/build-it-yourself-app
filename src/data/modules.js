@@ -78,6 +78,7 @@ export const modules = [
         title: 'Ständerwand vormontieren',
         time: '20 min bei 2 Personen',
         focus: 'Montage',
+        image: '/steps/w4_step_01.png',
         text:
           'Die fünf Ständer werden zwischen Schwelle und Rähm liegend ausgerichtet. Halte das Achsmaß von 62,5 cm ein, richte alle Ständer rechtwinklig aus und setze pro Verbindungspunkt eine Schraube mittig in den Ständer.',
         notes: [
@@ -91,6 +92,8 @@ export const modules = [
         title: 'OSB-Beplankung montieren',
         time: '20 min bei 2 Personen',
         focus: 'Beplankung',
+        image: '/steps/w4_step_02.png',
+        video: '/render/w4_animation_02.mp4',
         text:
           'Die vorbereitete Wand wird mit zwei OSB-Platten beplankt. Beide Platten liegen stoßfrei nebeneinander, der Stoß liegt mittig auf einem Ständer. Die Verschraubung erfolgt im gleichmäßigen Raster.',
         notes: [
@@ -100,25 +103,16 @@ export const modules = [
         ],
       },
       {
-        no: '03',
-        title: 'Wand aufrichten',
-        time: '10 min bei 2 Personen',
-        focus: 'Positionierung',
+        no: '3-4',
+        title: 'Wand aufrichten, befestigen und Zugverankerung setzen',
+        time: '20 min bei 2 Personen',
+        focus: 'Positionierung und Sicherung',
+        image: '/steps/w4_step_03_04.png',
         text:
-          'Die vormontierte Wand wird aufgerichtet und lotrecht an der Außenkante des Bodens aufgestellt. Vor dem endgültigen Verschrauben sollte die Wand provisorisch gesichert werden.',
+          'Die vormontierte Wand wird aufgerichtet, lotrecht an der Außenkante des Bodens ausgerichtet und zunächst provisorisch gesichert. Danach wird pro Wandfeld eine Schraube mittig durch die Schwelle in den Boden gesetzt und die Zugverankerung am rechten Endständer sowie zusätzlich schräg im Boden befestigt.',
         notes: [
           'Mit Wasserwaage oder Laser lotrecht ausrichten.',
-          'Mit Helfer oder Zwinge fixieren, damit nichts verrutscht.',
-        ],
-      },
-      {
-        no: '04',
-        title: 'Befestigen und Zugverankerung setzen',
-        time: '10 min bei 2 Personen',
-        focus: 'Sicherung',
-        text:
-          'Pro Wandfeld wird eine Schraube mittig durch die Schwelle in den Boden gesetzt. Anschließend wird die Zugverankerung am rechten Endständer verschraubt und zusätzlich schräg im Boden befestigt.',
-        notes: [
+          'Mit Helfer, Zwinge oder temporärer Sicherung gegen Verrutschen stabilisieren.',
           'Zugverankerung möglichst nah an der Ecke montieren.',
           'Sitz und Lot nach dem Verschrauben erneut prüfen.',
         ],
@@ -128,6 +122,8 @@ export const modules = [
         title: 'Dämmung einlegen',
         time: '20 min bei 2 Personen',
         focus: 'Ausbau',
+        image: '/steps/w4_step_05.png',
+        video: '/render/w4_animation_05.mp4',
         text:
           'Die Hohlräume zwischen den Ständern werden mit Dämmplatten spannungsfrei, aber formschlüssig ausgefüllt. Gleichzeitig bleibt Raum für Elektro, Wasser oder Heizungsinstallationen.',
         notes: [
@@ -140,6 +136,7 @@ export const modules = [
         title: 'Wandrückseite beplanken und sichern',
         time: '20 min bei 2 Personen',
         focus: 'Abschluss',
+        image: '/steps/w4_step_06.png',
         text:
           'Zum Abschluss wird die Rückseite analog zur Vorderseite mit zwei OSB-Platten beplankt. Wenn die Wand noch freisteht, muss sie temporär abgestützt werden.',
         notes: [
