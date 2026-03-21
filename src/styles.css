@@ -1527,6 +1527,113 @@ th {
   border-color: rgba(78, 106, 115, 0.28);
 }
 
+.import-test-page {
+  display: grid;
+  gap: 24px;
+  padding: 8px 0 48px;
+}
+
+.import-test-header {
+  max-width: 760px;
+}
+
+.import-test-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.import-test-status span {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(251, 249, 245, 0.92);
+  border: 1px solid rgba(216, 210, 200, 0.88);
+  color: var(--muted);
+  box-shadow: var(--shadow-soft);
+}
+
+.import-test-status--error {
+  color: #8a3d34;
+  border-color: rgba(138, 61, 52, 0.2);
+  background: rgba(138, 61, 52, 0.08);
+}
+
+.import-test-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.import-test-panel {
+  background: rgba(251, 249, 245, 0.96);
+  border: 1px solid rgba(216, 210, 200, 0.88);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+.import-test-panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.import-test-panel-head span {
+  color: var(--muted);
+}
+
+.import-test-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.import-test-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 0;
+  border-top: 1px solid rgba(216, 210, 200, 0.88);
+}
+
+.import-test-list .import-test-item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.import-test-item strong {
+  font-size: 1rem;
+}
+
+.import-test-item-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.import-test-thumb {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: 18px;
+  padding: 10px;
+  background: linear-gradient(180deg, rgba(249, 246, 240, 0.96) 0%, rgba(244, 239, 231, 0.92) 100%);
+  border: 1px solid rgba(216, 210, 200, 0.88);
+  box-shadow: var(--shadow-soft);
+}
+
+.import-test-item span,
+.import-test-empty {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 @media (max-width: 1080px) {
   .hero-card,
   .overview-grid,
@@ -1542,6 +1649,10 @@ th {
 
   .module-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .import-test-grid {
+    grid-template-columns: 1fr;
   }
 
   .info-grid--three,
@@ -1625,6 +1736,7 @@ th {
   .module-grid,
   .overview-grid,
   .step-card,
+  .import-test-grid,
   .info-grid--three,
   .info-grid--four {
     grid-template-columns: 1fr;

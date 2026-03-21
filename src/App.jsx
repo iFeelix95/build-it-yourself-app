@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import GuidePage from './pages/GuidePage'
+import ImportTestPage from './pages/ImportTestPage'
 import LandingPage from './pages/LandingPage'
 import MenuPage from './pages/MenuPage'
 
@@ -15,32 +16,42 @@ function HouseLogo() {
 }
 
 export default function App() {
-  const [screen, setScreen] = useState('landing')
+  const getInitialScreen = () =>
+    window.location.hash === '#import-test' ? 'import-test' : 'landing'
+
+  const [screen, setScreen] = useState(getInitialScreen)
   const [selectedModule, setSelectedModule] = useState(null)
+
+  const navigateTo = (nextScreen) => {
+    setScreen(nextScreen)
+    window.location.hash = nextScreen === 'import-test' ? 'import-test' : ''
+  }
 
   const openModule = (module) => {
     setSelectedModule(module)
-    setScreen('guide')
+    navigateTo('guide')
   }
 
   return (
     <div className="app-shell">
       <div className="top-accent" />
       <nav className="topbar">
-        <button className="brand-button" onClick={() => setScreen('landing')}>
+        <button className="brand-button" onClick={() => navigateTo('landing')}>
           <HouseLogo />
           <span>Build it yourself</span>
         </button>
         <div className="nav-actions">
-          <button className="text-btn" onClick={() => setScreen('menu')}>Module</button>
-          <button className="text-btn" onClick={() => setScreen('guide')} disabled={!selectedModule}>Anleitung</button>
+          <button className="text-btn" onClick={() => navigateTo('menu')}>Module</button>
+          <button className="text-btn" onClick={() => navigateTo('guide')} disabled={!selectedModule}>Anleitung</button>
+          <button className="text-btn" onClick={() => navigateTo('import-test')}>Import Test</button>
         </div>
       </nav>
 
-      {screen === 'landing' && <LandingPage onStart={() => setScreen('menu')} />}
+      {screen === 'landing' && <LandingPage onStart={() => navigateTo('menu')} />}
       {screen === 'menu' && <MenuPage onOpenModule={openModule} />}
-      {screen === 'guide' && selectedModule && <GuidePage module={selectedModule} onBack={() => setScreen('menu')} />}
+      {screen === 'guide' && selectedModule && <GuidePage module={selectedModule} onBack={() => navigateTo('menu')} />}
       {screen === 'guide' && !selectedModule && <MenuPage onOpenModule={openModule} />}
+      {screen === 'import-test' && <ImportTestPage />}
     </div>
   )
 }
