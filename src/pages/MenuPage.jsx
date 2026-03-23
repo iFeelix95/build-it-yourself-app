@@ -1,4 +1,5 @@
 import { modules } from '../data/modules'
+import ModelViewer from '../components/ModelViewer'
 
 const groupedModules = modules.reduce((acc, module) => {
   if (!acc[module.category]) acc[module.category] = []
@@ -12,10 +13,10 @@ export default function MenuPage({ onOpenModule }) {
       <div className="section-header">
         <div>
           <p className="eyebrow">Bauteilauswahl</p>
-          <h2>Wähle dein Modul nach Arbeitsschritten</h2>
+          <h2>Waehle dein Modul nach Arbeitsschritten</h2>
         </div>
         <p className="section-copy">
-          Der erste Prototyp startet mit einer vollständigen Anleitung für die Holzständerwand. Weitere
+          Der erste Prototyp startet mit einer vollstaendigen Anleitung fuer die Holzstaenderwand. Weitere
           Module sind bereits als Struktur vorbereitet.
         </p>
       </div>
@@ -81,7 +82,7 @@ export default function MenuPage({ onOpenModule }) {
                           {module.steps.slice(0, 4).map((step) => (
                             <span key={step.no}>{step.no}</span>
                           ))}
-                          <span>…</span>
+                          <span>...</span>
                         </div>
                       ) : null}
                     </CardTag>
@@ -106,25 +107,10 @@ export default function MenuPage({ onOpenModule }) {
                   <div
                     style={{
                       flex: 1,
-                      display: 'grid',
-                      placeItems: 'center',
                       padding: '8px 0 0',
                     }}
                   >
-                    <img
-                      className="module-preview-image"
-                      src="/images/w4_holzstaenderwand_eg.png"
-                      alt="Vorschau des Moduls W4"
-                      style={{
-                        width: '100%',
-                        maxWidth: '280px',
-                        maxHeight: '250px',
-                        height: 'auto',
-                        objectFit: 'contain',
-                        display: 'block',
-                        margin: '0 auto',
-                      }}
-                    />
+                    <ModelViewer modelPath="/models/wand_w4.glb" />
                   </div>
                 </button>
               )}

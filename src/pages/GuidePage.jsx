@@ -5,7 +5,7 @@ const serviceProviders = {
     name: 'VoltWerk Elektroservice',
     region: 'Einsatzgebiet: Hamburg Mitte und Nord',
     description:
-      'Unterstützt bei Elektroinstallationen, Leitungsführung und dem fachgerechten Anschluss im Ausbau.',
+      'Unterstuetzt bei Elektroinstallationen, Leitungsfuehrung und dem fachgerechten Anschluss im Ausbau.',
     days: [
       {
         day: 'Di, 18.03.',
@@ -33,11 +33,11 @@ const serviceProviders = {
       },
     ],
   },
-  Sanitär: {
-    name: 'KlarRohr Sanitärpartner',
-    region: 'Einsatzgebiet: Hamburg Süd und Harburg',
+  Sanitair: {
+    name: 'KlarRohr Sanitairpartner',
+    region: 'Einsatzgebiet: Hamburg Sued und Harburg',
     description:
-      'Unterstützt bei Sanitärleitungen, Wasseranschlüssen und der Koordination im Innenausbau.',
+      'Unterstuetzt bei Sanitairleitungen, Wasseranschluessen und der Koordination im Innenausbau.',
     days: [
       {
         day: 'Mo, 17.03.',
@@ -55,31 +55,41 @@ const productModals = {
   nagelpistole: {
     name: 'Schnurloser Gastacker / Nagelpistole',
     description:
-      'Geeignet für die schnelle Befestigung von OSB-Platten und Holzverbindungen im Montageablauf.',
-    price: 'Preis auf Anfrage / tagesweise Miete möglich',
+      'Geeignet fuer die schnelle Befestigung von OSB-Platten und Holzverbindungen im Montageablauf.',
+    price: 'Preis auf Anfrage / tagesweise Miete moeglich',
     vendor: 'Boels Mietservice',
     link: 'https://www.boels.com/de-de/mieten/schnurloser-gastacker/p/11289',
     rentalPrices: [
-      { label: 'pro Tag', value: '46,41 €' },
-      { label: 'Tagespreis ab 5 Miettagen', value: '37,13 €' },
+      { label: 'pro Tag', value: '46,41 EUR' },
+      { label: 'Tagespreis ab 5 Miettagen', value: '37,13 EUR' },
     ],
   },
   materialC: {
-    name: 'Konstruktionsvollholz für Rähm / Schwelle',
+    name: 'Konstruktionsvollholz fuer Raehm / Schwelle',
     description:
-      'Passendes Konstruktionsholz für die tragenden Horizontalhölzer im W4-Modul.',
-    price: 'ca. 23,17 € pro Stück',
+      'Passendes Konstruktionsholz fuer die tragenden Horizontalhoelzer im W4-Modul.',
+    price: 'ca. 23,17 EUR pro Stueck',
     vendor: 'HolzLand',
     link:
       'https://www.holzland.de/p/konstruktionsvollholz-fichte-nsi-nicht-sichtbarer-einbau-c24/HL1634565/?itemId=7000537361&pmzr=10133',
   },
 }
 
+const materialTooltipMeta = {
+  A: { dimension: '80 mm x 160 mm' },
+  B: { dimension: 'KVH Staenderprofil' },
+  C: { dimension: 'KVH Raehm / Schwelle' },
+  D: { dimension: 'OSB Platte, Wandformat' },
+  E: { dimension: '35 mm x 40 mm' },
+  F: { dimension: 'Metallverbinder' },
+  G: { dimension: 'Daemmplatte, Gefachformat' },
+}
+
 function StepIcon({ no }) {
   return <div className="step-badge">{no}</div>
 }
 
-function StepMedia({ step, onOpenVideo }) {
+function StepMedia({ step, onOpenVideo, onOpenImage }) {
   if (!step.image && !step.video) {
     return (
       <div className="step-visual-placeholder">
@@ -93,17 +103,25 @@ function StepMedia({ step, onOpenVideo }) {
     <div className="step-media-block">
       {step.image ? (
         <div className="step-media-image-wrap">
-          <img
-            src={step.image}
-            alt={`Schritt ${step.no} – ${step.title}`}
-            className="step-media-image"
-          />
+          <button
+            type="button"
+            className="step-media-zoom"
+            onClick={() => onOpenImage(step)}
+            aria-label={`Bild zu Schritt ${step.no} gross anzeigen`}
+          >
+            <img
+              src={step.image}
+              alt={`Schritt ${step.no} - ${step.title}`}
+              className="step-media-image"
+            />
+            <span className="step-media-zoom-hint">Vergroessern</span>
+          </button>
           {step.video ? (
             <button
               type="button"
               className="step-media-play"
               onClick={() => onOpenVideo(step)}
-              aria-label={`Video zu Schritt ${step.no} öffnen`}
+              aria-label={`Video zu Schritt ${step.no} oeffnen`}
             >
               {'\u25b6'}
             </button>
@@ -123,14 +141,14 @@ function StepServiceCard({ onOpen }) {
     <div className="service-card">
       <div className="service-card-copy">
         <span className="service-card-kicker">Service-Option</span>
-        <h4>Unterstützung bei Elektro, Heizung oder Sanitär</h4>
+        <h4>Unterstuetzung bei Elektro, Heizung oder Sanitair</h4>
         <p>
-          Wenn du dir Installationen im Ausbau nicht selbst zutraust, kannst du für
+          Wenn du dir Installationen im Ausbau nicht selbst zutraust, kannst du fuer
           diese Gewerke bei Bedarf Fachfirmen einbinden.
         </p>
       </div>
       <button type="button" className="text-btn service-card-btn" onClick={onOpen}>
-        Handwerker gefällig?
+        Handwerker gefaellig?
       </button>
     </div>
   )
@@ -152,7 +170,7 @@ function ServiceModal({ activeTrade, selectedSlots, onSelectTrade, onSelectSlot,
           type="button"
           className="video-modal-close"
           onClick={onClose}
-          aria-label="Servicefenster schließen"
+          aria-label="Servicefenster schliessen"
         >
           {'\u00d7'}
         </button>
@@ -160,10 +178,10 @@ function ServiceModal({ activeTrade, selectedSlots, onSelectTrade, onSelectSlot,
         <div className="service-modal-head">
           <div>
             <span className="service-card-kicker">Fiktive Partnerbetriebe</span>
-            <h3>Passende Unterstützung für den Ausbau</h3>
+            <h3>Passende Unterstuetzung fuer den Ausbau</h3>
             <p className="section-copy">
-              Wähle das Gewerk, für das du Unterstützung brauchst. Der Betrieb und die
-              verfügbaren Demo-Termine wechseln passend mit.
+              Waehle das Gewerk, fuer das du Unterstuetzung brauchst. Der Betrieb und die
+              verfuegbaren Demo-Termine wechseln passend mit.
             </p>
           </div>
           <div className="service-chip-row">
@@ -216,7 +234,7 @@ function ServiceModal({ activeTrade, selectedSlots, onSelectTrade, onSelectSlot,
             Termin anfragen
           </button>
           <p className="service-demo-note">
-            Dies ist ein Prototyp der späteren Servicevermittlung.
+            Dies ist ein Prototyp der spaeteren Servicevermittlung.
           </p>
         </div>
       </div>
@@ -238,7 +256,7 @@ function ProductModal({ product, onClose }) {
           type="button"
           className="video-modal-close"
           onClick={onClose}
-          aria-label="Produktfenster schließen"
+          aria-label="Produktfenster schliessen"
         >
           {'\u00d7'}
         </button>
@@ -292,31 +310,39 @@ function ProductModal({ product, onClose }) {
 
 export default function GuidePage({ module, onBack }) {
   const [activeVideoStep, setActiveVideoStep] = useState(null)
+  const [activeImageStep, setActiveImageStep] = useState(null)
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false)
   const [activeTrade, setActiveTrade] = useState('Elektro')
   const [selectedServiceSlots, setSelectedServiceSlots] = useState({
     Elektro: '',
     Heizung: '',
-    Sanitär: '',
+    Sanitair: '',
   })
   const [activeProduct, setActiveProduct] = useState(null)
 
   const totalCost = useMemo(() => {
     const sum = module.materials.reduce(
-      (acc, item) => acc + Number(item.total.replace(' €', '').replace(',', '.')),
+      (acc, item) =>
+        acc +
+        Number(
+          item.total
+            .replace(/[^0-9,.-]/g, '')
+            .replace(/\./g, '')
+            .replace(',', '.'),
+        ),
       0,
     )
-    return sum.toFixed(2).replace('.', ',') + ' €'
+    return sum.toFixed(2).replace('.', ',') + ' EUR'
   }, [module.materials])
 
   if (module.placeholder) {
     return (
       <section className="page-shell">
-        <button className="back-btn" onClick={onBack}>{'←'} Zurück zur Modulauswahl</button>
+        <button className="back-btn" onClick={onBack}>{'<-'} Zurueck zur Modulauswahl</button>
         <div className="placeholder-page">
           <h2>{module.title}</h2>
           <p>{module.description}</p>
-          <p>Dieses Modul ist im Frontend bereits eingeplant und kann als nächstes mit echten Inhalten befüllt werden.</p>
+          <p>Dieses Modul ist im Frontend bereits eingeplant und kann als naechstes mit echten Inhalten befuellt werden.</p>
         </div>
       </section>
     )
@@ -324,7 +350,7 @@ export default function GuidePage({ module, onBack }) {
 
   return (
     <section className="page-shell">
-      <button className="back-btn" onClick={onBack}>{'←'} Zurück zur Modulauswahl</button>
+      <button className="back-btn" onClick={onBack}>{'<-'} Zurueck zur Modulauswahl</button>
 
       <header className="guide-hero">
         <div>
@@ -366,8 +392,8 @@ export default function GuidePage({ module, onBack }) {
                 <img src={tool.icon} alt={tool.name} className="icon-image" />
                 {tool.name === 'Nagelpistole' && (
                   <div className="tool-tooltip">
-                    Nagelpistole {'–'} wird verwendet, um OSB-Platten und Holzverbindungen
-                    schnell und präzise zu befestigen.
+                    Nagelpistole - wird verwendet, um OSB-Platten und Holzverbindungen
+                    schnell und praezise zu befestigen.
                   </div>
                 )}
               </div>
@@ -397,10 +423,25 @@ export default function GuidePage({ module, onBack }) {
                 <img src={item.icon} alt={item.name} className="material-icon-image" />
 
                 <div className="material-tooltip">
-                  <strong>{item.name}</strong>
-                  <span>Menge: {item.qty}</span>
-                  <span>Preis/Stk: {item.price}</span>
-                  <span>Gesamt: {item.total}</span>
+                  <div className="material-tooltip-head">
+                    <strong>{item.name}</strong>
+                    <span>{materialTooltipMeta[item.key]?.dimension ?? 'Bauteilinformation'}</span>
+                  </div>
+                  <div className="material-tooltip-divider" aria-hidden="true" />
+                  <div className="material-tooltip-stats">
+                    <div className="material-tooltip-row">
+                      <span className="material-tooltip-label">Menge</span>
+                      <span className="material-tooltip-value">{item.qty}</span>
+                    </div>
+                    <div className="material-tooltip-row">
+                      <span className="material-tooltip-label">Preis / Stk</span>
+                      <span className="material-tooltip-value">{item.price}</span>
+                    </div>
+                    <div className="material-tooltip-row material-tooltip-row--total">
+                      <span className="material-tooltip-label">Gesamt</span>
+                      <span className="material-tooltip-value">{item.total}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -417,19 +458,23 @@ export default function GuidePage({ module, onBack }) {
             <article key={step.no} className="step-card">
               <div className="step-left">
                 <StepIcon no={step.no} />
-                <StepMedia step={step} onOpenVideo={setActiveVideoStep} />
+                <StepMedia
+                  step={step}
+                  onOpenVideo={setActiveVideoStep}
+                  onOpenImage={setActiveImageStep}
+                />
               </div>
               <div className="step-content">
                 <div className="step-head">
                   <div>
                     <p className="step-focus">{step.focus}</p>
-                    <h3>Step {step.no} {'–'} {step.title}</h3>
+                    <h3>Step {step.no} - {step.title}</h3>
                   </div>
                   <span className="time-pill">{step.time}</span>
                 </div>
                 <p>{step.text}</p>
                 <div className="note-box">
-                  <strong>Hinweise zur Ausführung</strong>
+                  <strong>Hinweise zur Ausfuehrung</strong>
                   <ul>
                     {step.notes.map((note) => (
                       <li key={note}>{note}</li>
@@ -462,14 +507,44 @@ export default function GuidePage({ module, onBack }) {
               type="button"
               className="video-modal-close"
               onClick={() => setActiveVideoStep(null)}
-              aria-label="Video schließen"
+              aria-label="Video schliessen"
             >
               {'\u00d7'}
             </button>
             <video className="video-modal-player" controls autoPlay preload="metadata">
               <source src={activeVideoStep.video} type="video/mp4" />
-              Dein Browser unterstützt das Video-Element nicht.
+              Dein Browser unterstuetzt das Video-Element nicht.
             </video>
+          </div>
+        </div>
+      ) : null}
+
+      {activeImageStep ? (
+        <div
+          className="video-modal-overlay"
+          onClick={() => setActiveImageStep(null)}
+          role="presentation"
+        >
+          <div
+            className="video-modal-card image-modal-card"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Bild zu Schritt ${activeImageStep.no}`}
+          >
+            <button
+              type="button"
+              className="video-modal-close"
+              onClick={() => setActiveImageStep(null)}
+              aria-label="Bild schliessen"
+            >
+              {'\u00d7'}
+            </button>
+            <img
+              src={activeImageStep.image}
+              alt={`Schritt ${activeImageStep.no} - ${activeImageStep.title}`}
+              className="image-modal-image"
+            />
           </div>
         </div>
       ) : null}
