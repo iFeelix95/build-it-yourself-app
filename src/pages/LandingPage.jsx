@@ -32,9 +32,9 @@ export default function LandingPage({ onStart }) {
             </div>
 
             <p className="eyebrow">MODULARES BAUSYSTEM</p>
-            <h1>Modular bauen. Schritt fuer Schritt.</h1>
+            <h1>Dein Haus.<br />Deine Haende.<br />Dein Projekt.</h1>
             <p className="lead">
-              Digitale Anleitung fuer den Holzbau - vom Bauteil bis zur Umsetzung.
+              Schritt-fuer-Schritt Anleitungen fuer den Holzbau — so klar, dass du wirklich anfangen kannst.
             </p>
 
             <div className="hero-points">
@@ -42,6 +42,8 @@ export default function LandingPage({ onStart }) {
               <span>3D-Vorschau im Fokus</span>
               <span>Fuer die Baustelle gedacht</span>
             </div>
+
+            <p className="hero-promise">Kein Vorwissen noetig — nur Motivation und die richtige Anleitung.</p>
 
             <div className="hero-actions">
               <button className="primary-btn" onClick={onStart}>
@@ -72,6 +74,10 @@ export default function LandingPage({ onStart }) {
                 <div>
                   <span className="frame-label">Workflow</span>
                   <strong>Auswahl, 3D, Umsetzung</strong>
+                </div>
+                <div>
+                  <span className="frame-label">Schwierigkeit</span>
+                  <strong>Einsteiger</strong>
                 </div>
               </div>
             </div>

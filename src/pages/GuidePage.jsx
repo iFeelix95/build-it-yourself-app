@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import ModelViewer from '../components/ModelViewer'
 
 const serviceProviders = {
   Elektro: {
@@ -89,52 +90,6 @@ function StepIcon({ no }) {
   return <div className="step-badge">{no}</div>
 }
 
-function StepMedia({ step, onOpenVideo, onOpenImage }) {
-  if (!step.image && !step.video) {
-    return (
-      <div className="step-visual-placeholder">
-        <div className="play-button">{'\u25b6'}</div>
-        <span>Visual / Video Platzhalter</span>
-      </div>
-    )
-  }
-
-  return (
-    <div className="step-media-block">
-      {step.image ? (
-        <div className="step-media-image-wrap">
-          <button
-            type="button"
-            className="step-media-zoom"
-            onClick={() => onOpenImage(step)}
-            aria-label={`Bild zu Schritt ${step.no} gross anzeigen`}
-          >
-            <img
-              src={step.image}
-              alt={`Schritt ${step.no} - ${step.title}`}
-              className="step-media-image"
-            />
-            <span className="step-media-zoom-hint">Vergroessern</span>
-          </button>
-          {step.video ? (
-            <button
-              type="button"
-              className="step-media-play"
-              onClick={() => onOpenVideo(step)}
-              aria-label={`Video zu Schritt ${step.no} oeffnen`}
-            >
-              {'\u25b6'}
-            </button>
-          ) : null}
-        </div>
-      ) : (
-        <div className="step-visual-placeholder">
-          <span>Bild folgt</span>
-        </div>
-      )}
-    </div>
-  )
-}
 
 function StepServiceCard({ onOpen }) {
   return (
@@ -320,6 +275,16 @@ export default function GuidePage({ module, onBack }) {
   })
   const [activeProduct, setActiveProduct] = useState(null)
 
+  const [currentStepIndex, setCurrentStepIndex] = useState(-1)
+  const [_completedSteps, _setCompletedSteps] = useState(new Set())
+  const [_stepTimers, _setStepTimers] = useState({})
+  const [activeVisualTab, setActiveVisualTab] = useState('model')
+
+  const actualSteps = module.steps
+  const currentStep = currentStepIndex >= 0 ? actualSteps[currentStepIndex] : null
+  const totalSteps = actualSteps.length
+  const isLastStep = currentStepIndex === totalSteps - 1
+
   const totalCost = useMemo(() => {
     const sum = module.materials.reduce(
       (acc, item) =>
@@ -348,147 +313,257 @@ export default function GuidePage({ module, onBack }) {
     )
   }
 
+  const showServiceCard =
+    currentStep &&
+    module.id === 'w4' &&
+    String(currentStep.no).replace(/^0+/, '') === '5'
+
+  const progressWidth = currentStepIndex === -1
+    ? 0
+    : ((currentStepIndex + 1) / totalSteps) * 100
+
   return (
-    <section className="page-shell">
-      <button className="back-btn" onClick={onBack}>{'<-'} Zurueck zur Modulauswahl</button>
-
-      <header className="guide-hero">
-        <div>
-          <p className="eyebrow">Anleitung</p>
-          <h2>{module.title}</h2>
-          <p className="section-copy">{module.description}</p>
+    <section className="guide-wizard">
+      <div className="wizard-header">
+        <button className="back-btn wizard-back-btn" onClick={onBack}>
+          ← Modulübersicht
+        </button>
+        <h2 className="wizard-title">{module.title}</h2>
+        <div className="wizard-progress">
+          {currentStepIndex === -1
+            ? 'Material-Übersicht'
+            : `Schritt ${currentStepIndex + 1} von ${totalSteps}`}
         </div>
-        <div className="guide-summary">
-          <div>
-            <span>Gesamtdauer</span>
-            <strong>{module.duration}</strong>
-          </div>
-          <div>
-            <span>Materialkosten</span>
-            <strong>{totalCost}</strong>
-          </div>
-        </div>
-      </header>
-
-      <div className="overview-grid">
-        <article className="overview-card product-card">
-          <h3>Werkzeuge</h3>
-          <div className="tool-list">
-            {module.tools.map((tool) => (
-              <div key={tool.name} className="icon-card">
-                {tool.name === 'Nagelpistole' && (
-                  <button
-                    type="button"
-                    className="cart-button"
-                    aria-label="Nagelpistole ansehen"
-                    onClick={(event) => {
-                      event.stopPropagation()
-                      setActiveProduct(productModals.nagelpistole)
-                    }}
-                  >
-                    {'\u{1F6D2}'}
-                  </button>
-                )}
-                <img src={tool.icon} alt={tool.name} className="icon-image" />
-                {tool.name === 'Nagelpistole' && (
-                  <div className="tool-tooltip">
-                    Nagelpistole - wird verwendet, um OSB-Platten und Holzverbindungen
-                    schnell und praezise zu befestigen.
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </article>
-
-        <article className="overview-card product-card">
-          <h3>Verwendete Materialien</h3>
-          <div className="material-grid">
-            {module.materials.map((item) => (
-              <div key={item.key} className={`material-icon-card material-${item.key}`}>
-                {item.key === 'C' && (
-                  <button
-                    type="button"
-                    className="cart-button"
-                    aria-label={`${item.name} ansehen`}
-                    onClick={(event) => {
-                      event.stopPropagation()
-                      setActiveProduct(productModals.materialC)
-                    }}
-                  >
-                    {'\u{1F6D2}'}
-                  </button>
-                )}
-
-                <img src={item.icon} alt={item.name} className="material-icon-image" />
-
-                <div className="material-tooltip">
-                  <div className="material-tooltip-head">
-                    <strong>{item.name}</strong>
-                    <span>{materialTooltipMeta[item.key]?.dimension ?? 'Bauteilinformation'}</span>
-                  </div>
-                  <div className="material-tooltip-divider" aria-hidden="true" />
-                  <div className="material-tooltip-stats">
-                    <div className="material-tooltip-row">
-                      <span className="material-tooltip-label">Menge</span>
-                      <span className="material-tooltip-value">{item.qty}</span>
-                    </div>
-                    <div className="material-tooltip-row">
-                      <span className="material-tooltip-label">Preis / Stk</span>
-                      <span className="material-tooltip-value">{item.price}</span>
-                    </div>
-                    <div className="material-tooltip-row material-tooltip-row--total">
-                      <span className="material-tooltip-label">Gesamt</span>
-                      <span className="material-tooltip-value">{item.total}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </article>
       </div>
 
-      <div className="step-stack">
-        {module.steps.map((step) => {
-          const showServiceCard =
-            module.id === 'w4' && String(step.no).replace(/^0+/, '') === '5'
+      <div className="wizard-progress-bar">
+        <div className="progress-fill" style={{ width: `${progressWidth}%` }} />
+      </div>
 
-          return (
-            <article key={step.no} className="step-card">
-              <div className="step-left">
-                <StepIcon no={step.no} />
-                <StepMedia
-                  step={step}
-                  onOpenVideo={setActiveVideoStep}
-                  onOpenImage={setActiveImageStep}
-                />
-              </div>
-              <div className="step-content">
-                <div className="step-head">
-                  <div>
-                    <p className="step-focus">{step.focus}</p>
-                    <h3>Step {step.no} - {step.title}</h3>
+      {/* ── Material-Übersicht (Schritt 0) ── */}
+      {currentStepIndex === -1 && (
+        <div className="material-overview-page">
+          <div className="material-overview-header">
+            <h2>Benötigte Materialien &amp; Werkzeuge</h2>
+            <p>Prüfe deine Einkaufsliste und bestelle fehlende Materialien.</p>
+            <div className="overview-summary">
+              <span>Gesamtkosten: <strong>{totalCost}</strong></span>
+              <span>Gesamtdauer: <strong>{module.duration}</strong></span>
+            </div>
+          </div>
+
+          <div className="overview-grid">
+            <article className="overview-card product-card">
+              <h3>Werkzeuge</h3>
+              <div className="tool-list">
+                {module.tools.map((tool) => (
+                  <div key={tool.name} className="icon-card">
+                    {tool.name === 'Nagelpistole' && (
+                      <button
+                        type="button"
+                        className="cart-button"
+                        aria-label="Nagelpistole ansehen"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          setActiveProduct(productModals.nagelpistole)
+                        }}
+                      >
+                        {'\u{1F6D2}'}
+                      </button>
+                    )}
+                    <img src={tool.icon} alt={tool.name} className="icon-image" />
+                    {tool.name === 'Nagelpistole' && (
+                      <div className="tool-tooltip">
+                        Nagelpistole - wird verwendet, um OSB-Platten und Holzverbindungen
+                        schnell und praezise zu befestigen.
+                      </div>
+                    )}
                   </div>
-                  <span className="time-pill">{step.time}</span>
-                </div>
-                <p>{step.text}</p>
-                <div className="note-box">
-                  <strong>Hinweise zur Ausfuehrung</strong>
-                  <ul>
-                    {step.notes.map((note) => (
-                      <li key={note}>{note}</li>
-                    ))}
-                  </ul>
-                </div>
-                {showServiceCard ? (
-                  <StepServiceCard onOpen={() => setIsServiceModalOpen(true)} />
-                ) : null}
+                ))}
               </div>
             </article>
-          )
-        })}
-      </div>
+
+            <article className="overview-card product-card">
+              <h3>Verwendete Materialien</h3>
+              <div className="material-grid">
+                {module.materials.map((item) => (
+                  <div key={item.key} className={`material-icon-card material-${item.key}`}>
+                    {item.key === 'C' && (
+                      <button
+                        type="button"
+                        className="cart-button"
+                        aria-label={`${item.name} ansehen`}
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          setActiveProduct(productModals.materialC)
+                        }}
+                      >
+                        {'\u{1F6D2}'}
+                      </button>
+                    )}
+                    <img src={item.icon} alt={item.name} className="material-icon-image" />
+                    <div className="material-tooltip">
+                      <div className="material-tooltip-head">
+                        <strong>{item.name}</strong>
+                        <span>{materialTooltipMeta[item.key]?.dimension ?? 'Bauteilinformation'}</span>
+                      </div>
+                      <div className="material-tooltip-divider" aria-hidden="true" />
+                      <div className="material-tooltip-stats">
+                        <div className="material-tooltip-row">
+                          <span className="material-tooltip-label">Menge</span>
+                          <span className="material-tooltip-value">{item.qty}</span>
+                        </div>
+                        <div className="material-tooltip-row">
+                          <span className="material-tooltip-label">Preis / Stk</span>
+                          <span className="material-tooltip-value">{item.price}</span>
+                        </div>
+                        <div className="material-tooltip-row material-tooltip-row--total">
+                          <span className="material-tooltip-label">Gesamt</span>
+                          <span className="material-tooltip-value">{item.total}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+
+          <div className="wizard-actions">
+            <button onClick={onBack} className="wizard-btn wizard-btn-back">
+              ← Zurück
+            </button>
+            <button
+              onClick={() => setCurrentStepIndex(0)}
+              className="wizard-btn wizard-btn-next"
+            >
+              Bau starten →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Wizard-Schritte ── */}
+      {currentStepIndex >= 0 && currentStep && (
+        <div className="wizard-main">
+          <div className="step-panel">
+            <div className="step-panel-inner">
+              <div className="step-head">
+                <div>
+                  <p className="step-focus">{currentStep.focus}</p>
+                  <h3>Step {currentStep.no} — {currentStep.title}</h3>
+                </div>
+                <span className="time-pill">{currentStep.time}</span>
+              </div>
+
+              <p>{currentStep.text}</p>
+
+              <div className="note-box">
+                <strong>Hinweise zur Ausfuehrung</strong>
+                <ul>
+                  {currentStep.notes.map((note) => (
+                    <li key={note}>{note}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {showServiceCard && (
+                <StepServiceCard onOpen={() => setIsServiceModalOpen(true)} />
+              )}
+
+              <div className="wizard-step-meta">
+                <div className="wizard-meta-item">
+                  <span className="wizard-meta-label">Gesamtdauer</span>
+                  <strong>{module.duration}</strong>
+                </div>
+                <div className="wizard-meta-item">
+                  <span className="wizard-meta-label">Materialkosten</span>
+                  <strong>{totalCost}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div className="wizard-actions">
+              <button
+                className="wizard-btn wizard-btn-back"
+                onClick={() => setCurrentStepIndex((prev) => prev <= 0 ? -1 : prev - 1)}
+                disabled={false}
+              >
+                ← Zurück
+              </button>
+              <button
+                className="wizard-btn wizard-btn-next"
+                onClick={() =>
+                  isLastStep ? onBack() : setCurrentStepIndex((prev) => prev + 1)
+                }
+              >
+                {isLastStep ? 'Abschließen' : 'Weiter →'}
+              </button>
+            </div>
+          </div>
+
+          <div className="visual-panel">
+            <div className="visual-header">
+              <span className="visual-title">Schritt {currentStep.no} Visualisierung</span>
+              <span className="visual-subtitle">Interaktive 3D-Ansicht</span>
+            </div>
+
+            <div className="visual-content">
+              {activeVisualTab === 'model' && (
+                <div className="model-container">
+                  <ModelViewer modelPath="/models/wand_w4.glb" />
+                </div>
+              )}
+              {activeVisualTab === 'photo' && currentStep.image && (
+                <img
+                  src={currentStep.image}
+                  alt={`Schritt ${currentStep.no}`}
+                  className="step-photo-large"
+                />
+              )}
+              {activeVisualTab === 'photo' && !currentStep.image && (
+                <div className="step-visual-placeholder">
+                  <span>Kein Foto verfügbar</span>
+                </div>
+              )}
+              {activeVisualTab === 'video' && currentStep.video && (
+                <video
+                  className="step-video-large"
+                  controls
+                  autoPlay
+                  preload="metadata"
+                >
+                  <source src={currentStep.video} type="video/mp4" />
+                </video>
+              )}
+            </div>
+
+            <div className="visual-tabs">
+              <button
+                className={`visual-tab ${activeVisualTab === 'model' ? 'active' : ''}`}
+                onClick={() => setActiveVisualTab('model')}
+              >
+                3D Modell
+              </button>
+              <button
+                className={`visual-tab ${activeVisualTab === 'photo' ? 'active' : ''}`}
+                onClick={() => setActiveVisualTab('photo')}
+                disabled={!currentStep.image}
+              >
+                Schritt Foto
+              </button>
+              {currentStep.video && (
+                <button
+                  className={`visual-tab ${activeVisualTab === 'video' ? 'active' : ''}`}
+                  onClick={() => setActiveVisualTab('video')}
+                >
+                  Video
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {activeVideoStep ? (
         <div

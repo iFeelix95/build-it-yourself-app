@@ -1,123 +1,83 @@
 import { modules } from '../data/modules'
-import ModelViewer from '../components/ModelViewer'
 
-const groupedModules = modules.reduce((acc, module) => {
-  if (!acc[module.category]) acc[module.category] = []
-  acc[module.category].push(module)
-  return acc
-}, {})
+function LockIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ position: 'absolute', top: 14, right: 14, color: '#888780' }}>
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  )
+}
+
+function getModuleStatus(module) {
+  if (module.completed) return 'completed'
+  if (module.locked) return 'locked'
+  return 'active'
+}
+
+function getStatusText(module) {
+  if (module.completed) return 'Abgeschlossen'
+  if (module.locked) return 'Gesperrt'
+  return 'Verfügbar'
+}
+
+const phases = [
+  { key: 'tragwerk', label: 'Phase 1: Tragwerk' },
+  { key: 'decken-dach', label: 'Phase 2: Decken & Dach' },
+]
 
 export default function MenuPage({ onOpenModule }) {
   return (
     <section className="page-shell">
-      <div className="section-header">
-        <div>
-          <p className="eyebrow">Bauteilauswahl</p>
-          <h2>Waehle dein Modul nach Arbeitsschritten</h2>
-        </div>
-        <p className="section-copy">
-          Der erste Prototyp startet mit einer vollstaendigen Anleitung fuer die Holzstaenderwand. Weitere
-          Module sind bereits als Struktur vorbereitet.
-        </p>
+      <div className="timeline-header">
+        <p className="eyebrow">Bauablauf</p>
+        <h2>Schritt für Schritt zum Rohbau</h2>
+        <p className="timeline-description">Arbeite dich durch die Module in der richtigen Reihenfolge. Jeder Schritt baut auf dem vorherigen auf.</p>
       </div>
 
-      {Object.entries(groupedModules).map(([category, items]) => {
-        const wallPreviewModule = items.find((module) => module.id === 'w4')
-        const isWallSection = Boolean(wallPreviewModule)
+      <div className="timeline-container">
+        <div className="timeline-line" />
 
-        return (
-          <div key={category} className="category-block">
-            <div className="category-head">
-              <h3>{category}</h3>
-              <span>{items.length} Modul{items.length > 1 ? 'e' : ''}</span>
-            </div>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: isWallSection ? 'minmax(0, 1fr) minmax(0, 1fr)' : '1fr',
-                gap: isWallSection ? '28px' : '32px',
-                alignItems: 'stretch',
-              }}
-            >
-              <div
-                className="module-grid"
-                style={isWallSection ? { gridTemplateColumns: '1fr' } : undefined}
-              >
-                {items.map((module) => {
-                  const isWallModule = isWallSection && module.id === 'w4'
-                  const CardTag = isWallModule ? 'article' : 'button'
-
-                  return (
-                    <CardTag
-                      key={module.id}
-                      className={`module-card ${isWallModule ? 'module-card--static' : ''} ${module.placeholder ? 'module-card--muted' : ''}`}
-                      {...(!isWallModule ? { type: 'button', onClick: () => onOpenModule(module) } : {})}
-                      style={
-                        isWallModule
-                          ? {
-                              minHeight: '360px',
-                              height: '100%',
-                              display: 'flex',
-                              flexDirection: 'column',
-                              alignItems: 'stretch',
-                              justifyContent: 'flex-start',
-                              gap: '14px',
-                              cursor: 'default',
-                            }
-                          : undefined
-                      }
-                    >
-                      <div className="module-card-top">
-                        <span className="module-tag">{module.id.toUpperCase()}</span>
-                        <span className="module-duration">{module.duration}</span>
-                      </div>
-                      <h4>{module.shortTitle}</h4>
-                      <p style={isWallModule ? { marginBottom: 0, flex: 1 } : undefined}>
-                        {module.description}
-                      </p>
-                      {module.placeholder ? (
-                        <span className="ghost-chip">In Vorbereitung</span>
-                      ) : module.id !== 'w4' ? (
-                        <div className="step-preview">
-                          {module.steps.slice(0, 4).map((step) => (
-                            <span key={step.no}>{step.no}</span>
-                          ))}
-                          <span>...</span>
-                        </div>
-                      ) : null}
-                    </CardTag>
-                  )
-                })}
-              </div>
-              {isWallSection && wallPreviewModule && (
-                <button
-                  className="overview-card preview-card"
-                  type="button"
-                  onClick={() => onOpenModule(wallPreviewModule)}
-                  style={{
-                    minHeight: '360px',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <h3>Bauteilvorschau</h3>
-                  <div
-                    style={{
-                      flex: 1,
-                      padding: '8px 0 0',
-                    }}
-                  >
-                    <ModelViewer modelPath="/models/wand_w4.glb" />
+        {phases.map((phase) => {
+          const phaseModules = modules.filter((m) => m.phase === phase.key)
+          if (phaseModules.length === 0) return null
+          return (
+            <div key={phase.key} className="phase-section">
+              <span className="phase-label">{phase.label}</span>
+              {phaseModules.map((module) => (
+                <div key={module.id} className="timeline-item">
+                  <div className={`timeline-dot ${getModuleStatus(module)}`}>
+                    {module.completed ? '✓' : module.step}
                   </div>
-                </button>
-              )}
+                  <div className={`timeline-card ${module.locked ? 'locked' : ''}`}>
+                    {module.locked && <LockIcon />}
+                    <div className="card-content">
+                      <span className="module-tag">{module.id.toUpperCase()}</span>
+                      <h4 className="module-title">{module.shortTitle}</h4>
+                      <p className="module-desc">{module.description}</p>
+                      <div className="module-meta">
+                        <span className="meta-duration">{module.duration}</span>
+                        <span className={`meta-status ${getModuleStatus(module)}`}>
+                          {getStatusText(module)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="card-actions">
+                      <div className="module-price">€ {module.price || '89'}</div>
+                      <button
+                        className={`timeline-btn ${module.locked ? 'locked' : ''}`}
+                        onClick={() => !module.locked && onOpenModule(module)}
+                      >
+                        {module.locked ? 'Freischalten' : module.completed ? 'Anzeigen' : 'Starten'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
     </section>
   )
 }
