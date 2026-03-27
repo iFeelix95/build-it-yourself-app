@@ -2397,3 +2397,238 @@ th {
     justify-content: space-between;
   }
 }
+
+/* ── Product Modal (new benefit-driven design) ───────── */
+
+.product-modal-new {
+  background: #2C1A0E;
+  border-radius: 16px;
+  overflow: hidden;
+  color: #F5EFE6;
+  max-width: 420px;
+  width: 100%;
+  margin: auto;
+  position: relative;
+}
+
+.product-hero-section {
+  background: linear-gradient(135deg, #C4832A, #A86E22);
+  padding: 20px 24px;
+  position: relative;
+}
+
+.product-modal-close-new {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.product-context-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: inline-block;
+  letter-spacing: 0.06em;
+}
+
+.product-title-new {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  line-height: 1.2;
+  color: white;
+}
+
+.product-benefit-subtitle {
+  font-size: 13px;
+  opacity: 0.9;
+  margin: 0 0 16px;
+  line-height: 1.4;
+  color: white;
+}
+
+.price-highlight-box {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.price-highlight-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.price-highlight-row:last-child {
+  margin-bottom: 0;
+}
+
+.price-label-new {
+  font-size: 11px;
+  opacity: 0.8;
+  color: white;
+}
+
+.price-value-new {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.savings-badge {
+  font-size: 10px;
+  color: #2C5530;
+  background: rgba(0, 255, 0, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.product-body-section {
+  padding: 20px 24px;
+}
+
+.bundle-hint-box {
+  background: #1A0E06;
+  border: 1px solid rgba(196, 131, 42, 0.27);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 16px;
+  font-size: 11px;
+  text-align: center;
+  color: #F5EFE6;
+}
+
+.bundle-link {
+  color: #C4832A;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.benefit-list-new {
+  margin-bottom: 20px;
+}
+
+.benefit-item-new {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #F5EFE6;
+}
+
+.benefit-check {
+  width: 16px;
+  height: 16px;
+  background: #639922;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.vendor-info-box {
+  background: #1A0E06;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+
+.vendor-detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.vendor-detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.vendor-label-new {
+  opacity: 0.7;
+  color: #F5EFE6;
+}
+
+.vendor-value-new {
+  font-weight: 600;
+  color: #F5EFE6;
+}
+
+.product-actions-new {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.btn-rent-now {
+  background: #C4832A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  text-decoration: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s ease;
+}
+
+.btn-rent-now:hover {
+  background: #A86E22;
+}
+
+.btn-add-cart {
+  background: transparent;
+  border: 1px solid rgba(196, 131, 42, 0.27);
+  color: #C4832A;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+
+.btn-add-cart:hover {
+  background: rgba(196, 131, 42, 0.1);
+}
+
+.affiliate-note {
+  font-size: 10px;
+  opacity: 0.6;
+  text-align: center;
+  margin: 0;
+  color: #F5EFE6;
+}

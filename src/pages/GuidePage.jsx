@@ -198,65 +198,106 @@ function ServiceModal({ activeTrade, selectedSlots, onSelectTrade, onSelectSlot,
 }
 
 function ProductModal({ product, onClose }) {
+  const bulkSavings = product.rentalPrices
+    ? Math.round(
+        ((parseFloat(product.rentalPrices[0].value) - parseFloat(product.rentalPrices[1].value)) /
+          parseFloat(product.rentalPrices[0].value)) *
+          100,
+      )
+    : 0
+
   return (
     <div className="video-modal-overlay" onClick={onClose} role="presentation">
       <div
-        className="video-modal-card product-modal-card"
+        className="product-modal-new"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label={product.name}
       >
-        <button
-          type="button"
-          className="video-modal-close"
-          onClick={onClose}
-          aria-label="Produktfenster schliessen"
-        >
-          {'\u00d7'}
-        </button>
+        <div className="product-hero-section">
+          <button
+            type="button"
+            className="product-modal-close-new"
+            onClick={onClose}
+            aria-label="Produktfenster schließen"
+          >
+            ×
+          </button>
 
-        <div className="product-modal-copy">
-          <span className="service-card-kicker">Produktinfo</span>
-          <h3>{product.name}</h3>
-          <p className="section-copy">{product.description}</p>
+          <span className="product-context-badge">Für W4 Modul benötigt</span>
+          <h3 className="product-title-new">{product.name}</h3>
+          <p className="product-benefit-subtitle">
+            {product.name.includes('Nagelpistole')
+              ? 'Befestigt OSB-Platten schnell und präzise — spart 60% Zeit gegenüber Handschrauben'
+              : product.description}
+          </p>
+
+          {product.rentalPrices && (
+            <div className="price-highlight-box">
+              <div className="price-highlight-row">
+                <span className="price-label-new">Tagesmiete</span>
+                <span className="price-value-new">{product.rentalPrices[0].value}</span>
+              </div>
+              <div className="price-highlight-row">
+                <span className="price-label-new">Ab 5 Miettagen</span>
+                <span className="price-value-new">
+                  {product.rentalPrices[1].value}
+                  <span className="savings-badge">-{bulkSavings}%</span>
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
-        {product.rentalPrices ? (
-          <div className="product-price-box">
-            <span className="product-price-title">Ab (inkl. MwSt.)</span>
-            <div className="product-price-grid">
-              {product.rentalPrices.map((entry) => (
-                <div key={entry.label} className="product-price-item">
-                  <span>{entry.label}</span>
-                  <strong>{entry.value}</strong>
-                </div>
-              ))}
+        <div className="product-body-section">
+          <div className="bundle-hint-box">
+            💡 <span className="bundle-link">Werkzeug-Bundle W4</span> — alle Werkzeuge für 89€/Woche
+          </div>
+
+          <div className="benefit-list-new">
+            <div className="benefit-item-new">
+              <div className="benefit-check">✓</div>
+              <span>Spart 60% Zeit bei der OSB-Montage</span>
+            </div>
+            <div className="benefit-item-new">
+              <div className="benefit-check">✓</div>
+              <span>Gleichmäßige Befestigung, weniger Nacharbeit</span>
+            </div>
+            <div className="benefit-item-new">
+              <div className="benefit-check">✓</div>
+              <span>Weniger Kraftaufwand, rückenschonend</span>
             </div>
           </div>
-        ) : null}
 
-        <div className="product-detail-grid">
-          <div className="product-detail-card">
-            <span>Preis</span>
-            <strong>{product.price}</strong>
+          <div className="vendor-info-box">
+            <div className="vendor-detail-row">
+              <span className="vendor-label-new">Anbieter</span>
+              <span className="vendor-value-new">{product.vendor}</span>
+            </div>
+            <div className="vendor-detail-row">
+              <span className="vendor-label-new">Verfügbarkeit</span>
+              <span className="vendor-value-new">Sofort lieferbar</span>
+            </div>
+            <div className="vendor-detail-row">
+              <span className="vendor-label-new">Abholung</span>
+              <span className="vendor-value-new">Wiesbaden, 2,4 km</span>
+            </div>
           </div>
-          <div className="product-detail-card">
-            <span>Bezugsquelle</span>
-            <strong>{product.vendor}</strong>
-          </div>
-        </div>
 
-        <div className="product-modal-actions">
-          <a
-            href={product.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="primary-btn product-modal-link"
-          >
-            Zum Shop
-          </a>
-          <p className="service-demo-note">Externer Partnerlink</p>
+          <div className="product-actions-new">
+            <a
+              href={product.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-rent-now"
+            >
+              Jetzt mieten →
+            </a>
+            <button className="btn-add-cart">🛒</button>
+          </div>
+
+          <p className="affiliate-note">Affiliate-Link • BIY erhält Provision ohne Mehrkosten für dich</p>
         </div>
       </div>
     </div>
