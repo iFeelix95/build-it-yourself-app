@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
-import ModelViewer from '../components/ModelViewer'
+
+// ── Data ─────────────────────────────────────────────────────────────────────
 
 const serviceProviders = {
   Elektro: {
@@ -8,14 +9,8 @@ const serviceProviders = {
     description:
       'Unterstuetzt bei Elektroinstallationen, Leitungsfuehrung und dem fachgerechten Anschluss im Ausbau.',
     days: [
-      {
-        day: 'Di, 18.03.',
-        slots: ['08:30 Uhr', '11:00 Uhr', '15:30 Uhr'],
-      },
-      {
-        day: 'Do, 20.03.',
-        slots: ['09:15 Uhr', '12:30 Uhr', '16:00 Uhr'],
-      },
+      { day: 'Di, 18.03.', slots: ['08:30 Uhr', '11:00 Uhr', '15:30 Uhr'] },
+      { day: 'Do, 20.03.', slots: ['09:15 Uhr', '12:30 Uhr', '16:00 Uhr'] },
     ],
   },
   Heizung: {
@@ -24,14 +19,8 @@ const serviceProviders = {
     description:
       'Begleitet bei Heizungsleitungen, Anschlusspunkten und technischen Abstimmungen im Ausbau.',
     days: [
-      {
-        day: 'Mi, 19.03.',
-        slots: ['07:45 Uhr', '10:30 Uhr', '14:00 Uhr'],
-      },
-      {
-        day: 'Fr, 21.03.',
-        slots: ['08:15 Uhr', '11:45 Uhr', '15:15 Uhr'],
-      },
+      { day: 'Mi, 19.03.', slots: ['07:45 Uhr', '10:30 Uhr', '14:00 Uhr'] },
+      { day: 'Fr, 21.03.', slots: ['08:15 Uhr', '11:45 Uhr', '15:15 Uhr'] },
     ],
   },
   Sanitair: {
@@ -40,14 +29,8 @@ const serviceProviders = {
     description:
       'Unterstuetzt bei Sanitairleitungen, Wasseranschluessen und der Koordination im Innenausbau.',
     days: [
-      {
-        day: 'Mo, 17.03.',
-        slots: ['09:00 Uhr', '12:00 Uhr', '16:15 Uhr'],
-      },
-      {
-        day: 'Do, 20.03.',
-        slots: ['08:45 Uhr', '13:15 Uhr', '17:00 Uhr'],
-      },
+      { day: 'Mo, 17.03.', slots: ['09:00 Uhr', '12:00 Uhr', '16:15 Uhr'] },
+      { day: 'Do, 20.03.', slots: ['08:45 Uhr', '13:15 Uhr', '17:00 Uhr'] },
     ],
   },
 }
@@ -71,8 +54,7 @@ const productModals = {
       'Passendes Konstruktionsholz fuer die tragenden Horizontalhoelzer im W4-Modul.',
     price: 'ca. 23,17 EUR pro Stueck',
     vendor: 'HolzLand',
-    link:
-      'https://www.holzland.de/p/konstruktionsvollholz-fichte-nsi-nicht-sichtbarer-einbau-c24/HL1634565/?itemId=7000537361&pmzr=10133',
+    link: 'https://www.holzland.de/p/konstruktionsvollholz-fichte-nsi-nicht-sichtbarer-einbau-c24/HL1634565/?itemId=7000537361&pmzr=10133',
   },
 }
 
@@ -86,10 +68,70 @@ const materialTooltipMeta = {
   G: { dimension: 'Daemmplatte, Gefachformat' },
 }
 
-function StepIcon({ no }) {
-  return <div className="step-badge">{no}</div>
+// ── SVG Icons ─────────────────────────────────────────────────────────────────
+
+function BackArrowIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+      <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
 }
 
+function ArrowRightIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function CheckCircleIcon({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+      <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M5 8l2.2 2.2 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function ClockIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+      <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M8 4.5V8l2.5 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function TipIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+      <circle cx="8" cy="8" r="7" stroke="#C4832A" strokeWidth="1.5" />
+      <path d="M8 5v4M8 11v.5" stroke="#C4832A" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function ShieldCheckIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+      <path d="M8 1.5L2.5 4v4c0 3 2.5 5.5 5.5 6 3-0.5 5.5-3 5.5-6V4L8 1.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <path d="M5.5 8l1.8 1.8 3.2-3.2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function MaterialIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+      <path d="M2 5l6-3 6 3v6l-6 3-6-3V5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <path d="M8 2v12M2 5l6 3 6-3" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+// ── Service Card ──────────────────────────────────────────────────────────────
 
 function StepServiceCard({ onOpen }) {
   return (
@@ -109,6 +151,8 @@ function StepServiceCard({ onOpen }) {
   )
 }
 
+// ── Service Modal ─────────────────────────────────────────────────────────────
+
 function ServiceModal({ activeTrade, selectedSlots, onSelectTrade, onSelectSlot, onClose }) {
   const provider = serviceProviders[activeTrade]
 
@@ -116,17 +160,12 @@ function ServiceModal({ activeTrade, selectedSlots, onSelectTrade, onSelectSlot,
     <div className="video-modal-overlay" onClick={onClose} role="presentation">
       <div
         className="video-modal-card service-modal-card"
-        onClick={(event) => event.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label="Handwerker-Service"
       >
-        <button
-          type="button"
-          className="video-modal-close"
-          onClick={onClose}
-          aria-label="Servicefenster schliessen"
-        >
+        <button type="button" className="video-modal-close" onClick={onClose} aria-label="Servicefenster schliessen">
           {'\u00d7'}
         </button>
 
@@ -135,8 +174,7 @@ function ServiceModal({ activeTrade, selectedSlots, onSelectTrade, onSelectSlot,
             <span className="service-card-kicker">Fiktive Partnerbetriebe</span>
             <h3>Passende Unterstuetzung fuer den Ausbau</h3>
             <p className="section-copy">
-              Waehle das Gewerk, fuer das du Unterstuetzung brauchst. Der Betrieb und die
-              verfuegbaren Demo-Termine wechseln passend mit.
+              Waehle das Gewerk, fuer das du Unterstuetzung brauchst.
             </p>
           </div>
           <div className="service-chip-row">
@@ -167,7 +205,6 @@ function ServiceModal({ activeTrade, selectedSlots, onSelectTrade, onSelectSlot,
                 {entry.slots.map((slot) => {
                   const slotId = `${entry.day} ${slot}`
                   const isActive = selectedSlots[activeTrade] === slotId
-
                   return (
                     <button
                       key={slotId}
@@ -185,24 +222,21 @@ function ServiceModal({ activeTrade, selectedSlots, onSelectTrade, onSelectSlot,
         </div>
 
         <div className="service-modal-actions">
-          <button type="button" className="primary-btn">
-            Termin anfragen
-          </button>
-          <p className="service-demo-note">
-            Dies ist ein Prototyp der spaeteren Servicevermittlung.
-          </p>
+          <button type="button" className="primary-btn">Termin anfragen</button>
+          <p className="service-demo-note">Dies ist ein Prototyp der spaeteren Servicevermittlung.</p>
         </div>
       </div>
     </div>
   )
 }
 
+// ── Product Modal ─────────────────────────────────────────────────────────────
+
 function ProductModal({ product, onClose }) {
   const bulkSavings = product.rentalPrices
     ? Math.round(
         ((parseFloat(product.rentalPrices[0].value) - parseFloat(product.rentalPrices[1].value)) /
-          parseFloat(product.rentalPrices[0].value)) *
-          100,
+          parseFloat(product.rentalPrices[0].value)) * 100,
       )
     : 0
 
@@ -210,21 +244,15 @@ function ProductModal({ product, onClose }) {
     <div className="video-modal-overlay" onClick={onClose} role="presentation">
       <div
         className="product-modal-new"
-        onClick={(event) => event.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label={product.name}
       >
         <div className="product-hero-section">
-          <button
-            type="button"
-            className="product-modal-close-new"
-            onClick={onClose}
-            aria-label="Produktfenster schließen"
-          >
+          <button type="button" className="product-modal-close-new" onClick={onClose} aria-label="Produktfenster schließen">
             ×
           </button>
-
           <span className="product-context-badge">Für W4 Modul benötigt</span>
           <h3 className="product-title-new">{product.name}</h3>
           <p className="product-benefit-subtitle">
@@ -232,7 +260,6 @@ function ProductModal({ product, onClose }) {
               ? 'Befestigt OSB-Platten schnell und präzise — spart 60% Zeit gegenüber Handschrauben'
               : product.description}
           </p>
-
           {product.rentalPrices && (
             <div className="price-highlight-box">
               <div className="price-highlight-row">
@@ -252,49 +279,43 @@ function ProductModal({ product, onClose }) {
 
         <div className="product-body-section">
           <div className="bundle-hint-box">
-            💡 <span className="bundle-link">Werkzeug-Bundle W4</span> — alle Werkzeuge für 89€/Woche
+            <MaterialIcon />
+            <span className="bundle-link"> Werkzeug-Bundle W4</span> — alle Werkzeuge für 89€/Woche
           </div>
 
           <div className="benefit-list-new">
-            <div className="benefit-item-new">
-              <div className="benefit-check">✓</div>
-              <span>Spart 60% Zeit bei der OSB-Montage</span>
-            </div>
-            <div className="benefit-item-new">
-              <div className="benefit-check">✓</div>
-              <span>Gleichmäßige Befestigung, weniger Nacharbeit</span>
-            </div>
-            <div className="benefit-item-new">
-              <div className="benefit-check">✓</div>
-              <span>Weniger Kraftaufwand, rückenschonend</span>
-            </div>
+            {[
+              'Spart 60% Zeit bei der OSB-Montage',
+              'Gleichmäßige Befestigung, weniger Nacharbeit',
+              'Weniger Kraftaufwand, rückenschonend',
+            ].map((benefit) => (
+              <div key={benefit} className="benefit-item-new">
+                <div className="benefit-check"><CheckCircleIcon /></div>
+                <span>{benefit}</span>
+              </div>
+            ))}
           </div>
 
           <div className="vendor-info-box">
-            <div className="vendor-detail-row">
-              <span className="vendor-label-new">Anbieter</span>
-              <span className="vendor-value-new">{product.vendor}</span>
-            </div>
-            <div className="vendor-detail-row">
-              <span className="vendor-label-new">Verfügbarkeit</span>
-              <span className="vendor-value-new">Sofort lieferbar</span>
-            </div>
-            <div className="vendor-detail-row">
-              <span className="vendor-label-new">Abholung</span>
-              <span className="vendor-value-new">Wiesbaden, 2,4 km</span>
-            </div>
+            {[
+              { label: 'Anbieter', value: product.vendor },
+              { label: 'Verfügbarkeit', value: 'Sofort lieferbar' },
+              { label: 'Abholung', value: 'Wiesbaden, 2,4 km' },
+            ].map(({ label, value }) => (
+              <div key={label} className="vendor-detail-row">
+                <span className="vendor-label-new">{label}</span>
+                <span className="vendor-value-new">{value}</span>
+              </div>
+            ))}
           </div>
 
           <div className="product-actions-new">
-            <a
-              href={product.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-rent-now"
-            >
-              Jetzt mieten →
+            <a href={product.link} target="_blank" rel="noopener noreferrer" className="btn-rent-now">
+              Jetzt mieten <ArrowRightIcon />
             </a>
-            <button className="btn-add-cart">🛒</button>
+            <button className="btn-add-cart" aria-label="Zum Warenkorb hinzufügen">
+              <MaterialIcon />
+            </button>
           </div>
 
           <p className="affiliate-note">Affiliate-Link • BIY erhält Provision ohne Mehrkosten für dich</p>
@@ -304,22 +325,18 @@ function ProductModal({ product, onClose }) {
   )
 }
 
+// ── Main Component ────────────────────────────────────────────────────────────
+
 export default function GuidePage({ module, onBack }) {
-  const [activeVideoStep, setActiveVideoStep] = useState(null)
-  const [activeImageStep, setActiveImageStep] = useState(null)
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false)
   const [activeTrade, setActiveTrade] = useState('Elektro')
   const [selectedServiceSlots, setSelectedServiceSlots] = useState({
-    Elektro: '',
-    Heizung: '',
-    Sanitair: '',
+    Elektro: '', Heizung: '', Sanitair: '',
   })
   const [activeProduct, setActiveProduct] = useState(null)
-
   const [currentStepIndex, setCurrentStepIndex] = useState(-1)
-  const [_completedSteps, _setCompletedSteps] = useState(new Set())
-  const [_stepTimers, _setStepTimers] = useState({})
-  const [activeVisualTab, setActiveVisualTab] = useState('model')
+  const [completedSteps, setCompletedSteps] = useState(new Set())
+  const [activeVisualTab, setActiveVisualTab] = useState('photo')
 
   const actualSteps = module.steps
   const currentStep = currentStepIndex >= 0 ? actualSteps[currentStepIndex] : null
@@ -329,22 +346,32 @@ export default function GuidePage({ module, onBack }) {
   const totalCost = useMemo(() => {
     const sum = module.materials.reduce(
       (acc, item) =>
-        acc +
-        Number(
-          item.total
-            .replace(/[^0-9,.-]/g, '')
-            .replace(/\./g, '')
-            .replace(',', '.'),
-        ),
+        acc + Number(item.total.replace(/[^0-9,.-]/g, '').replace(/\./g, '').replace(',', '.')),
       0,
     )
     return sum.toFixed(2).replace('.', ',') + ' EUR'
   }, [module.materials])
 
+  const progressWidth = currentStepIndex === -1
+    ? 0
+    : ((currentStepIndex + 1) / totalSteps) * 100
+
+  function handleMarkComplete() {
+    setCompletedSteps((prev) => new Set([...prev, currentStepIndex]))
+    if (!isLastStep) {
+      setCurrentStepIndex((prev) => prev + 1)
+    } else {
+      onBack()
+    }
+  }
+
+  // ── Placeholder ──
   if (module.placeholder) {
     return (
       <section className="page-shell">
-        <button className="back-btn" onClick={onBack}>{'<-'} Zurueck zur Modulauswahl</button>
+        <button className="back-btn" onClick={onBack}>
+          <BackArrowIcon /> Zurueck zur Modulauswahl
+        </button>
         <div className="placeholder-page">
           <h2>{module.title}</h2>
           <p>{module.description}</p>
@@ -355,41 +382,65 @@ export default function GuidePage({ module, onBack }) {
   }
 
   const showServiceCard =
-    currentStep &&
-    module.id === 'w4' &&
+    currentStep && module.id === 'w4' &&
     String(currentStep.no).replace(/^0+/, '') === '5'
 
-  const progressWidth = currentStepIndex === -1
-    ? 0
-    : ((currentStepIndex + 1) / totalSteps) * 100
-
   return (
-    <section className="guide-wizard">
-      <div className="wizard-header">
-        <button className="back-btn wizard-back-btn" onClick={onBack}>
-          ← Modulübersicht
-        </button>
-        <h2 className="wizard-title">{module.title}</h2>
-        <div className="wizard-progress">
-          {currentStepIndex === -1
-            ? 'Material-Übersicht'
-            : `Schritt ${currentStepIndex + 1} von ${totalSteps}`}
+    <div className="gd-container">
+
+      {/* ── Sticky Progress Header ─────────────────────── */}
+      <header className="gd-header" aria-label={`Anleitung: ${module.title}`}>
+        <div className="gd-header-row">
+          <button className="gd-back-btn" onClick={onBack} aria-label="Zurück zur Modulübersicht">
+            <BackArrowIcon /> Übersicht
+          </button>
+
+          <div className="gd-header-center">
+            <span className="gd-module-badge">{module.id.toUpperCase()}</span>
+            <h1 className="gd-module-title">{module.title}</h1>
+          </div>
+
+          <span className="gd-prof-badge" aria-label="Statik geprüft von Experten">
+            <ShieldCheckIcon /> Statik-geprüft
+          </span>
         </div>
-      </div>
 
-      <div className="wizard-progress-bar">
-        <div className="progress-fill" style={{ width: `${progressWidth}%` }} />
-      </div>
+        <div className="gd-header-progress">
+          <div
+            className="gd-prog-track"
+            role="progressbar"
+            aria-valuenow={Math.round(progressWidth)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={
+              currentStepIndex === -1
+                ? 'Material-Übersicht'
+                : `Schritt ${currentStepIndex + 1} von ${totalSteps}`
+            }
+          >
+            <div className="gd-prog-fill" style={{ width: `${progressWidth}%` }} />
+          </div>
+          <span className="gd-prog-label">
+            {currentStepIndex === -1
+              ? 'Material-Übersicht'
+              : `Schritt ${currentStepIndex + 1} / ${totalSteps}`}
+          </span>
+        </div>
+      </header>
 
-      {/* ── Material-Übersicht (Schritt 0) ── */}
+      {/* ── Material Overview (Schritt -1) ─────────────── */}
       {currentStepIndex === -1 && (
         <div className="material-overview-page">
           <div className="material-overview-header">
-            <h2>Benötigte Materialien &amp; Werkzeuge</h2>
-            <p>Prüfe deine Einkaufsliste und bestelle fehlende Materialien.</p>
-            <div className="overview-summary">
-              <span>Gesamtkosten: <strong>{totalCost}</strong></span>
-              <span>Gesamtdauer: <strong>{module.duration}</strong></span>
+            <div className="gd-overview-meta">
+              <span className="lp-context-badge">Vor dem Start</span>
+              <h2>Materialien &amp; Werkzeuge</h2>
+              <p>Prüfe deine Einkaufsliste, bevor du mit dem Bau beginnst.</p>
+              <div className="overview-summary">
+                <span>Gesamtkosten: <strong>{totalCost}</strong></span>
+                <span>Gesamtdauer: <strong>{module.duration}</strong></span>
+                <span className="gd-prof-inline"><ShieldCheckIcon /> Professor-validiert</span>
+              </div>
             </div>
           </div>
 
@@ -404,18 +455,15 @@ export default function GuidePage({ module, onBack }) {
                         type="button"
                         className="cart-button"
                         aria-label="Nagelpistole ansehen"
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          setActiveProduct(productModals.nagelpistole)
-                        }}
+                        onClick={(e) => { e.stopPropagation(); setActiveProduct(productModals.nagelpistole) }}
                       >
-                        {'\u{1F6D2}'}
+                        <MaterialIcon />
                       </button>
                     )}
                     <img src={tool.icon} alt={tool.name} className="icon-image" />
                     {tool.name === 'Nagelpistole' && (
                       <div className="tool-tooltip">
-                        Nagelpistole - wird verwendet, um OSB-Platten und Holzverbindungen
+                        Nagelpistole — wird verwendet, um OSB-Platten und Holzverbindungen
                         schnell und praezise zu befestigen.
                       </div>
                     )}
@@ -434,12 +482,9 @@ export default function GuidePage({ module, onBack }) {
                         type="button"
                         className="cart-button"
                         aria-label={`${item.name} ansehen`}
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          setActiveProduct(productModals.materialC)
-                        }}
+                        onClick={(e) => { e.stopPropagation(); setActiveProduct(productModals.materialC) }}
                       >
-                        {'\u{1F6D2}'}
+                        <MaterialIcon />
                       </button>
                     )}
                     <img src={item.icon} alt={item.name} className="material-icon-image" />
@@ -472,217 +517,248 @@ export default function GuidePage({ module, onBack }) {
 
           <div className="wizard-actions">
             <button onClick={onBack} className="wizard-btn wizard-btn-back">
-              ← Zurück
+              <BackArrowIcon /> Zurück
             </button>
-            <button
-              onClick={() => setCurrentStepIndex(0)}
-              className="wizard-btn wizard-btn-next"
-            >
-              Bau starten →
+            <button onClick={() => setCurrentStepIndex(0)} className="wizard-btn wizard-btn-next">
+              Bau starten <ArrowRightIcon />
             </button>
           </div>
         </div>
       )}
 
-      {/* ── Wizard-Schritte ── */}
+      {/* ── Step Wizard Split Screen ────────────────────── */}
       {currentStepIndex >= 0 && currentStep && (
-        <div className="wizard-main">
-          <div className="step-panel">
-            <div className="step-panel-inner">
-              <div className="step-head">
-                <div>
-                  <p className="step-focus">{currentStep.focus}</p>
-                  <h3>Step {currentStep.no} — {currentStep.title}</h3>
+        <div className="gd-split" key={currentStepIndex}>
+
+          {/* Left: Instruction Panel */}
+          <aside
+            className="gd-instruction"
+            aria-labelledby={`gd-step-title-${currentStepIndex}`}
+          >
+            <div className="gd-instruction-inner">
+
+              {/* Step Hero */}
+              <div className="gd-step-hero">
+                <div className={`gd-step-num${completedSteps.has(currentStepIndex) ? ' gd-step-num--done' : ''}`} aria-hidden="true">
+                  {completedSteps.has(currentStepIndex)
+                    ? <CheckCircleIcon size={20} />
+                    : currentStep.no}
                 </div>
-                <span className="time-pill">{currentStep.time}</span>
+                <div className="gd-step-meta">
+                  <span className="gd-step-focus">{currentStep.focus}</span>
+                  <h2 id={`gd-step-title-${currentStepIndex}`} className="gd-step-title">
+                    {currentStep.title}
+                  </h2>
+                  <span className="gd-time-badge">
+                    <ClockIcon /> {currentStep.time}
+                  </span>
+                </div>
               </div>
 
-              <p>{currentStep.text}</p>
+              {/* Instruction Text */}
+              <p className="gd-step-text">{currentStep.text}</p>
 
-              <div className="note-box">
-                <strong>Hinweise zur Ausfuehrung</strong>
-                <ul>
+              {/* Material Reference Chips — nur für diesen Schritt */}
+              {currentStep.materials && currentStep.materials.length > 0 && (
+                <div className="gd-mat-section" aria-label="Material-Referenz für diesen Schritt">
+                  <div className="gd-mat-header">
+                    <MaterialIcon />
+                    <span className="gd-mat-label">Material-Referenz</span>
+                  </div>
+                  <div className="gd-mat-chips">
+                    {module.materials
+                      .filter((mat) => currentStep.materials.includes(mat.key))
+                      .map((mat) => {
+                        const isShopLink = mat.key === 'C'
+                        return (
+                          <button
+                            key={mat.key}
+                            type="button"
+                            className={`gd-mat-chip${isShopLink ? ' gd-mat-chip--clickable' : ''}`}
+                            onClick={() => isShopLink && setActiveProduct(productModals.materialC)}
+                            aria-label={`Material ${mat.key}: ${mat.name}, ${mat.qty} Stk, ${mat.price} pro Stück`}
+                            disabled={!isShopLink}
+                          >
+                            <span className="gd-mat-code">{mat.key}</span>
+                            <span className="gd-mat-name">{mat.name}</span>
+                            <div className="gd-mat-tooltip" role="tooltip">
+                              <div className="gd-mat-tooltip-img-wrap">
+                                <img
+                                  src={mat.icon}
+                                  alt={mat.name}
+                                  className="gd-mat-tooltip-img"
+                                />
+                              </div>
+                              <div className="gd-mat-tooltip-title">
+                                <span className="gd-mat-tooltip-code">{mat.key}</span>
+                                {mat.name}
+                              </div>
+                              {materialTooltipMeta[mat.key]?.dimension && (
+                                <span className="gd-mat-tooltip-dim">
+                                  {materialTooltipMeta[mat.key].dimension}
+                                </span>
+                              )}
+                              <div className="gd-mat-tooltip-row">
+                                <span>Menge</span><strong>{mat.qty} Stk</strong>
+                              </div>
+                              <div className="gd-mat-tooltip-row">
+                                <span>Preis / Stk</span><strong>{mat.price}</strong>
+                              </div>
+                              <div className="gd-mat-tooltip-row gd-mat-tooltip-row--total">
+                                <span>Gesamt</span><strong>{mat.total}</strong>
+                              </div>
+                              {isShopLink && (
+                                <span className="gd-mat-tooltip-cta">Zum Shop →</span>
+                              )}
+                            </div>
+                          </button>
+                        )
+                      })}
+                  </div>
+                </div>
+              )}
+
+              {/* Notes / Hinweise */}
+              <div className="gd-notes-box" aria-label="Hinweise zur Ausführung">
+                <div className="gd-notes-header">
+                  <TipIcon />
+                  <strong>Hinweise zur Ausführung</strong>
+                </div>
+                <ul className="gd-notes-list">
                   {currentStep.notes.map((note) => (
                     <li key={note}>{note}</li>
                   ))}
                 </ul>
               </div>
 
+              {/* Service Card */}
               {showServiceCard && (
                 <StepServiceCard onOpen={() => setIsServiceModalOpen(true)} />
               )}
 
-              <div className="wizard-step-meta">
-                <div className="wizard-meta-item">
-                  <span className="wizard-meta-label">Gesamtdauer</span>
+              {/* Module Meta */}
+              <div className="gd-meta-row">
+                <div className="gd-meta-item">
+                  <span className="gd-meta-label">Gesamtdauer</span>
                   <strong>{module.duration}</strong>
                 </div>
-                <div className="wizard-meta-item">
-                  <span className="wizard-meta-label">Materialkosten</span>
+                <div className="gd-meta-item">
+                  <span className="gd-meta-label">Materialkosten</span>
                   <strong>{totalCost}</strong>
                 </div>
               </div>
+
             </div>
 
-            <div className="wizard-actions">
+            {/* Navigation */}
+            <nav className="gd-nav" aria-label="Schritt-Navigation">
               <button
-                className="wizard-btn wizard-btn-back"
+                className="gd-btn-back"
                 onClick={() => setCurrentStepIndex((prev) => prev <= 0 ? -1 : prev - 1)}
-                disabled={false}
+                aria-label="Zurück zum vorherigen Schritt"
               >
-                ← Zurück
+                <BackArrowIcon /> Zurück
               </button>
               <button
-                className="wizard-btn wizard-btn-next"
-                onClick={() =>
-                  isLastStep ? onBack() : setCurrentStepIndex((prev) => prev + 1)
-                }
+                className="gd-btn-complete"
+                onClick={handleMarkComplete}
+                aria-label={isLastStep ? 'Modul abschließen' : 'Schritt als erledigt markieren und weiter'}
               >
-                {isLastStep ? 'Abschließen' : 'Weiter →'}
-              </button>
-            </div>
-          </div>
-
-          <div className="visual-panel">
-            <div className="visual-header">
-              <span className="visual-title">Schritt {currentStep.no} Visualisierung</span>
-              <span className="visual-subtitle">Interaktive 3D-Ansicht</span>
-            </div>
-
-            <div className="visual-content">
-              {activeVisualTab === 'model' && (
-                <div className="model-container">
-                  <ModelViewer modelPath="/models/wand_w4.glb" />
-                </div>
-              )}
-              {activeVisualTab === 'photo' && currentStep.image && (
-                <img
-                  src={currentStep.image}
-                  alt={`Schritt ${currentStep.no}`}
-                  className="step-photo-large"
-                />
-              )}
-              {activeVisualTab === 'photo' && !currentStep.image && (
-                <div className="step-visual-placeholder">
-                  <span>Kein Foto verfügbar</span>
-                </div>
-              )}
-              {activeVisualTab === 'video' && currentStep.video && (
-                <video
-                  className="step-video-large"
-                  controls
-                  autoPlay
-                  preload="metadata"
-                >
-                  <source src={currentStep.video} type="video/mp4" />
-                </video>
-              )}
-            </div>
-
-            <div className="visual-tabs">
-              <button
-                className={`visual-tab ${activeVisualTab === 'model' ? 'active' : ''}`}
-                onClick={() => setActiveVisualTab('model')}
-              >
-                3D Modell
+                <CheckCircleIcon /> {isLastStep ? 'Abschließen' : 'Erledigt'}
               </button>
               <button
-                className={`visual-tab ${activeVisualTab === 'photo' ? 'active' : ''}`}
+                className="gd-btn-next"
+                onClick={() => isLastStep ? onBack() : setCurrentStepIndex((prev) => prev + 1)}
+                aria-label={isLastStep ? 'Modul abschließen' : 'Weiter zum nächsten Schritt'}
+              >
+                {isLastStep ? 'Fertig' : 'Weiter'} <ArrowRightIcon />
+              </button>
+            </nav>
+          </aside>
+
+          {/* Right: Visual Panel */}
+          <section
+            className="gd-visual"
+            aria-label={`Visualisierung Schritt ${currentStep.no}: ${currentStep.title}`}
+          >
+            {/* Visual Tabs */}
+            <div className="gd-visual-tabs" role="tablist" aria-label="Anzeigemodus wählen">
+              <button
+                role="tab"
+                aria-selected={activeVisualTab === 'photo'}
+                className={`gd-vtab${activeVisualTab === 'photo' ? ' active' : ''}`}
                 onClick={() => setActiveVisualTab('photo')}
                 disabled={!currentStep.image}
+                aria-disabled={!currentStep.image}
               >
-                Schritt Foto
+                Schritt-Foto
               </button>
               {currentStep.video && (
                 <button
-                  className={`visual-tab ${activeVisualTab === 'video' ? 'active' : ''}`}
+                  role="tab"
+                  aria-selected={activeVisualTab === 'video'}
+                  className={`gd-vtab${activeVisualTab === 'video' ? ' active' : ''}`}
                   onClick={() => setActiveVisualTab('video')}
                 >
                   Video
                 </button>
               )}
             </div>
-          </div>
+
+            {/* Visual Content */}
+            <div className="gd-visual-content">
+              {activeVisualTab === 'photo' && currentStep.image && (
+                <img
+                  src={currentStep.image}
+                  alt={`Schritt ${currentStep.no}: ${currentStep.title}`}
+                  className="gd-step-photo"
+                />
+              )}
+              {activeVisualTab === 'photo' && !currentStep.image && (
+                <div className="gd-no-media" role="status">
+                  <span>Kein Foto für diesen Schritt</span>
+                </div>
+              )}
+              {activeVisualTab === 'video' && currentStep.video && (
+                <video
+                  className="gd-step-video"
+                  controls
+                  autoPlay
+                  preload="metadata"
+                  aria-label={`Video zu Schritt ${currentStep.no}: ${currentStep.title}`}
+                >
+                  <source src={currentStep.video} type="video/mp4" />
+                </video>
+              )}
+            </div>
+
+            {/* Visual Footer */}
+            <div className="gd-visual-footer">
+              <span className="gd-vf-caption">Schritt {currentStep.no} — {currentStep.title}</span>
+              <span className="gd-vf-sub">Interaktive 3D-Ansicht</span>
+            </div>
+          </section>
+
         </div>
       )}
 
-      {activeVideoStep ? (
-        <div
-          className="video-modal-overlay"
-          onClick={() => setActiveVideoStep(null)}
-          role="presentation"
-        >
-          <div
-            className="video-modal-card"
-            onClick={(event) => event.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-label={`Video zu Schritt ${activeVideoStep.no}`}
-          >
-            <button
-              type="button"
-              className="video-modal-close"
-              onClick={() => setActiveVideoStep(null)}
-              aria-label="Video schliessen"
-            >
-              {'\u00d7'}
-            </button>
-            <video className="video-modal-player" controls autoPlay preload="metadata">
-              <source src={activeVideoStep.video} type="video/mp4" />
-              Dein Browser unterstuetzt das Video-Element nicht.
-            </video>
-          </div>
-        </div>
-      ) : null}
-
-      {activeImageStep ? (
-        <div
-          className="video-modal-overlay"
-          onClick={() => setActiveImageStep(null)}
-          role="presentation"
-        >
-          <div
-            className="video-modal-card image-modal-card"
-            onClick={(event) => event.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-label={`Bild zu Schritt ${activeImageStep.no}`}
-          >
-            <button
-              type="button"
-              className="video-modal-close"
-              onClick={() => setActiveImageStep(null)}
-              aria-label="Bild schliessen"
-            >
-              {'\u00d7'}
-            </button>
-            <img
-              src={activeImageStep.image}
-              alt={`Schritt ${activeImageStep.no} - ${activeImageStep.title}`}
-              className="image-modal-image"
-            />
-          </div>
-        </div>
-      ) : null}
-
-      {isServiceModalOpen ? (
+      {/* ── Modals ─────────────────────────────────────── */}
+      {isServiceModalOpen && (
         <ServiceModal
           activeTrade={activeTrade}
           selectedSlots={selectedServiceSlots}
           onSelectTrade={setActiveTrade}
           onSelectSlot={(trade, slot) =>
-            setSelectedServiceSlots((current) => ({
-              ...current,
-              [trade]: slot,
-            }))
+            setSelectedServiceSlots((curr) => ({ ...curr, [trade]: slot }))
           }
           onClose={() => setIsServiceModalOpen(false)}
         />
-      ) : null}
+      )}
 
-      {activeProduct ? (
+      {activeProduct && (
         <ProductModal product={activeProduct} onClose={() => setActiveProduct(null)} />
-      ) : null}
-    </section>
+      )}
+
+    </div>
   )
 }

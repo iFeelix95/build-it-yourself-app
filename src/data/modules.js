@@ -84,6 +84,7 @@ export const modules = [
         time: '20 min bei 2 Personen',
         focus: 'Montage',
         image: '/steps/w4_step_01.png',
+        materials: ['A', 'B', 'C'],
         text:
           'Die fünf Ständer werden zwischen Schwelle und Rähm liegend ausgerichtet. Halte das Achsmaß von 62,5 cm ein, richte alle Ständer rechtwinklig aus und setze pro Verbindungspunkt eine Schraube mittig in den Ständer.',
         notes: [
@@ -99,6 +100,7 @@ export const modules = [
         focus: 'Beplankung',
         image: '/steps/w4_step_02.png',
         video: '/render/w4_animation_02.mp4',
+        materials: ['D', 'E'],
         text:
           'Die vorbereitete Wand wird mit zwei OSB-Platten beplankt. Beide Platten liegen stoßfrei nebeneinander, der Stoß liegt mittig auf einem Ständer. Die Verschraubung erfolgt im gleichmäßigen Raster.',
         notes: [
@@ -113,6 +115,7 @@ export const modules = [
         time: '20 min bei 2 Personen',
         focus: 'Positionierung und Sicherung',
         image: '/steps/w4_step_03_04.png',
+        materials: ['A', 'C', 'F'],
         text:
           'Die vormontierte Wand wird aufgerichtet, lotrecht an der Außenkante des Bodens ausgerichtet und zunächst provisorisch gesichert. Danach wird pro Wandfeld eine Schraube mittig durch die Schwelle in den Boden gesetzt und die Zugverankerung am rechten Endständer sowie zusätzlich schräg im Boden befestigt.',
         notes: [
@@ -129,6 +132,7 @@ export const modules = [
         focus: 'Ausbau',
         image: '/steps/w4_step_05.png',
         video: '/render/w4_animation_05.mp4',
+        materials: ['G'],
         text:
           'Die Hohlräume zwischen den Ständern werden mit Dämmplatten spannungsfrei, aber formschlüssig ausgefüllt. Gleichzeitig bleibt Raum für Elektro, Wasser oder Heizungsinstallationen.',
         notes: [
@@ -142,6 +146,7 @@ export const modules = [
         time: '20 min bei 2 Personen',
         focus: 'Abschluss',
         image: '/steps/w4_step_06.png',
+        materials: ['D', 'E'],
         text:
           'Zum Abschluss wird die Rückseite analog zur Vorderseite mit zwei OSB-Platten beplankt. Wenn die Wand noch freisteht, muss sie temporär abgestützt werden.',
         notes: [
