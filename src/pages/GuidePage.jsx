@@ -125,8 +125,9 @@ function ShieldCheckIcon() {
 function MaterialIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
-      <path d="M2 5l6-3 6 3v6l-6 3-6-3V5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
-      <path d="M8 2v12M2 5l6 3 6-3" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="M1 1h2l1.5 7h7l1.5-5H4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="6.5" cy="13" r="1" fill="currentColor" />
+      <circle cx="11.5" cy="13" r="1" fill="currentColor" />
     </svg>
   )
 }
@@ -477,6 +478,7 @@ export default function GuidePage({ module, onBack }) {
               <div className="material-grid">
                 {module.materials.map((item) => (
                   <div key={item.key} className={`material-icon-card material-${item.key}`}>
+                    <span className="material-key-badge">{item.key}</span>
                     {item.key === 'C' && (
                       <button
                         type="button"
@@ -487,7 +489,12 @@ export default function GuidePage({ module, onBack }) {
                         <MaterialIcon />
                       </button>
                     )}
-                    <img src={item.icon} alt={item.name} className="material-icon-image" />
+                    <div className="material-icon-image-wrap">
+                      <img src={item.icon} alt={item.name} className="material-icon-image" />
+                    </div>
+                    <span className="material-name-label">
+                      {item.name}{item.dimension && <><br /><span className="material-dimension">{item.dimension}</span></>}
+                    </span>
                     <div className="material-tooltip">
                       <div className="material-tooltip-head">
                         <strong>{item.name}</strong>

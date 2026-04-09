@@ -21,6 +21,7 @@ export const modules = [
       {
         key: 'A',
         name: 'Schraube',
+        dimension: '80 × 160 mm',
         icon: '/icons/schraube_80_160.png',
         qty: 15,
         price: '0,70 €',
@@ -29,6 +30,7 @@ export const modules = [
       {
         key: 'B',
         name: 'Ständer',
+        dimension: 'KVH C24',
         icon: '/icons/stuetze.png',
         qty: 5,
         price: '23,17 €',
@@ -36,7 +38,8 @@ export const modules = [
       },
       {
         key: 'C',
-        name: 'Rähm/Schwelle',
+        name: 'Rähm / Schwelle',
+        dimension: 'KVH C24',
         icon: '/icons/balken.png',
         qty: 2,
         price: '23,17 €',
@@ -47,6 +50,7 @@ export const modules = [
       {
         key: 'D',
         name: 'OSB-Platte',
+        dimension: 'Wandformat',
         icon: '/icons/osb.png',
         qty: 4,
         price: '26,97 €',
@@ -55,6 +59,7 @@ export const modules = [
       {
         key: 'E',
         name: 'Schraube',
+        dimension: '35 × 40 mm',
         icon: '/icons/schraube_35_40.png',
         qty: 68,
         price: '0,04 €',
@@ -71,6 +76,7 @@ export const modules = [
       {
         key: 'G',
         name: 'Dämmplatte',
+        dimension: 'Gefachformat',
         icon: '/icons/daemmplatte.png',
         qty: 4,
         price: '35,39 €',
