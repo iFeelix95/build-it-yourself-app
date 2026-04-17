@@ -2851,16 +2851,17 @@ th {
 .lp-hero-copy {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .lp-logo-wrap {
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
 }
 
 .lp-logo-img {
-  height: 40px;
+  height: 80px;
   width: auto;
   object-fit: contain;
 }
@@ -3098,6 +3099,73 @@ th {
 
   .lp-stat-num {
     font-size: 1.5rem;
+  }
+}
+
+/* ── iPad Optimierung ────────────────────────────────── */
+
+/* iPad Landscape (z.B. iPad Pro 12.9" quer) */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  .gd-split {
+    grid-template-columns: 420px 1fr;
+  }
+
+  .gd-mat-chip {
+    font-size: 13px;
+    padding: 7px 12px 7px 6px;
+    min-height: 44px;
+  }
+
+  .gd-btn-back,
+  .gd-btn-complete,
+  .gd-btn-next,
+  .mn-btn,
+  .lp-cta-primary {
+    min-height: 48px;
+  }
+}
+
+/* iPad Portrait */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .gd-split {
+    grid-template-columns: 1fr;
+    grid-template-rows: 45vh 1fr;
+    overflow: visible;
+  }
+
+  .gd-visual {
+    order: -1;
+    min-height: unset;
+  }
+
+  .gd-instruction {
+    border-right: none;
+    overflow: visible;
+  }
+
+  .gd-instruction-inner {
+    overflow: visible;
+  }
+
+  .gd-container {
+    height: auto;
+    overflow: visible;
+  }
+
+  .lp-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .mn-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mn-card-aside {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
   }
 }
 
@@ -3816,4 +3884,182 @@ th {
     flex-wrap: nowrap;
     padding-bottom: 4px;
   }
+}
+
+/* ── Service Calendar (sc-*) ─────────────────────────── */
+
+.sc-root {
+  background: rgba(26, 14, 6, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(196, 131, 42, 0.18);
+  border-radius: 16px;
+  padding: 18px 0 16px;
+  overflow: hidden;
+}
+
+.sc-month-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 20px 14px;
+}
+
+.sc-month-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #F5EFE6;
+  letter-spacing: -0.01em;
+}
+
+.sc-available-hint {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: rgba(196, 131, 42, 0.7);
+}
+
+/* Horizontal scroll track */
+.sc-days-track {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 0 20px 8px;
+  scrollbar-width: none;
+}
+
+.sc-days-track::-webkit-scrollbar {
+  display: none;
+}
+
+.sc-day-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.sc-day-letter {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(245, 239, 230, 0.35);
+  text-transform: uppercase;
+}
+
+.sc-day-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: rgba(245, 239, 230, 0.25);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.sc-day-btn--available {
+  color: #F5EFE6;
+  cursor: pointer;
+  position: relative;
+}
+
+.sc-day-btn--available::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #C4832A;
+}
+
+.sc-day-btn--available:hover {
+  background: rgba(196, 131, 42, 0.15);
+  transform: scale(1.08);
+}
+
+.sc-day-btn--selected {
+  background: linear-gradient(135deg, #C4832A 0%, #E09A3A 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px rgba(196, 131, 42, 0.45);
+  transform: scale(1.1);
+}
+
+.sc-day-btn--selected::after {
+  display: none;
+}
+
+/* Divider */
+.sc-root::after {
+  content: none;
+}
+
+/* Slot row */
+.sc-slots {
+  border-top: 1px solid rgba(196, 131, 42, 0.15);
+  margin-top: 12px;
+  padding: 14px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: sc-fade-in 0.2s ease;
+}
+
+@keyframes sc-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sc-slots-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(196, 131, 42, 0.8);
+}
+
+.sc-slot-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sc-slot-btn {
+  background: rgba(245, 239, 230, 0.07);
+  border: 1px solid rgba(245, 239, 230, 0.12);
+  color: #F5EFE6;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  min-height: 36px;
+}
+
+.sc-slot-btn:hover {
+  background: rgba(196, 131, 42, 0.12);
+  border-color: rgba(196, 131, 42, 0.3);
+}
+
+.sc-slot-btn--active {
+  background: rgba(196, 131, 42, 0.2);
+  border-color: #C4832A;
+  color: #C4832A;
+}
+
+.sc-hint {
+  font-size: 12px;
+  color: rgba(245, 239, 230, 0.35);
+  text-align: center;
+  padding: 14px 20px 0;
+  margin: 0;
+  border-top: 1px solid rgba(196, 131, 42, 0.1);
+  margin-top: 12px;
 }

@@ -132,6 +132,98 @@ function MaterialIcon() {
   )
 }
 
+function CartIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+      <circle cx="9" cy="21" r="1" />
+      <circle cx="20" cy="21" r="1" />
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+    </svg>
+  )
+}
+
+// ── Service Calendar ──────────────────────────────────────────────────────────
+
+const DAY_LETTERS = ['S', 'M', 'D', 'M', 'D', 'F', 'S']
+
+function parseServiceDay(str) {
+  const match = str.match(/(\d+)\.(\d+)\./)
+  return match ? parseInt(match[1]) : null
+}
+
+function ServiceCalendar({ provider, activeTrade, selectedSlots, onSelectSlot }) {
+  const [selectedDayNum, setSelectedDayNum] = useState(null)
+
+  const YEAR = 2025, MONTH = 2 // März 2025
+  const daysInMonth = new Date(YEAR, MONTH + 1, 0).getDate()
+
+  const availableMap = {}
+  provider.days.forEach((entry) => {
+    const d = parseServiceDay(entry.day)
+    if (d) availableMap[d] = entry
+  })
+
+  const days = Array.from({ length: daysInMonth }, (_, i) => {
+    const dayNum = i + 1
+    const date = new Date(YEAR, MONTH, dayNum)
+    return { dayNum, letter: DAY_LETTERS[date.getDay()], available: !!availableMap[dayNum], entry: availableMap[dayNum] || null }
+  })
+
+  const selectedEntry = selectedDayNum ? availableMap[selectedDayNum] : null
+
+  return (
+    <div className="sc-root">
+      <div className="sc-month-row">
+        <span className="sc-month-name">März 2025</span>
+        <span className="sc-available-hint">{Object.keys(availableMap).length} Termine verfügbar</span>
+      </div>
+
+      <div className="sc-days-track">
+        {days.map((day) => (
+          <div key={day.dayNum} className="sc-day-col">
+            <span className="sc-day-letter">{day.letter}</span>
+            <button
+              type="button"
+              className={`sc-day-btn${day.available ? ' sc-day-btn--available' : ''}${selectedDayNum === day.dayNum ? ' sc-day-btn--selected' : ''}`}
+              onClick={() => day.available && setSelectedDayNum(day.dayNum === selectedDayNum ? null : day.dayNum)}
+              disabled={!day.available}
+              aria-label={`${day.dayNum}. März${day.available ? ', verfügbar' : ''}`}
+              aria-pressed={selectedDayNum === day.dayNum}
+            >
+              {day.dayNum}
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {selectedEntry ? (
+        <div className="sc-slots">
+          <span className="sc-slots-label">{selectedEntry.day}</span>
+          <div className="sc-slot-row">
+            {selectedEntry.slots.map((slot) => {
+              const slotId = `${selectedEntry.day} ${slot}`
+              const isActive = selectedSlots[activeTrade] === slotId
+              return (
+                <button
+                  key={slot}
+                  type="button"
+                  className={`sc-slot-btn${isActive ? ' sc-slot-btn--active' : ''}`}
+                  onClick={() => onSelectSlot(activeTrade, slotId)}
+                  aria-pressed={isActive}
+                >
+                  {slot}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      ) : (
+        <p className="sc-hint">Wähle einen markierten Tag aus</p>
+      )}
+    </div>
+  )
+}
+
 // ── Service Card ──────────────────────────────────────────────────────────────
 
 function StepServiceCard({ onOpen }) {
@@ -198,29 +290,12 @@ function ServiceModal({ activeTrade, selectedSlots, onSelectTrade, onSelectSlot,
           <p className="section-copy">{provider.description}</p>
         </div>
 
-        <div className="service-booking">
-          {provider.days.map((entry) => (
-            <div key={entry.day} className="service-day-card">
-              <strong>{entry.day}</strong>
-              <div className="service-slot-row">
-                {entry.slots.map((slot) => {
-                  const slotId = `${entry.day} ${slot}`
-                  const isActive = selectedSlots[activeTrade] === slotId
-                  return (
-                    <button
-                      key={slotId}
-                      type="button"
-                      className={`service-slot${isActive ? ' service-slot--active' : ''}`}
-                      onClick={() => onSelectSlot(activeTrade, slotId)}
-                    >
-                      {slot}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
+        <ServiceCalendar
+          provider={provider}
+          activeTrade={activeTrade}
+          selectedSlots={selectedSlots}
+          onSelectSlot={onSelectSlot}
+        />
 
         <div className="service-modal-actions">
           <button type="button" className="primary-btn">Termin anfragen</button>
@@ -315,7 +390,7 @@ function ProductModal({ product, onClose }) {
               Jetzt mieten <ArrowRightIcon />
             </a>
             <button className="btn-add-cart" aria-label="Zum Warenkorb hinzufügen">
-              <MaterialIcon />
+              <CartIcon />
             </button>
           </div>
 
@@ -458,7 +533,7 @@ export default function GuidePage({ module, onBack }) {
                         aria-label="Nagelpistole ansehen"
                         onClick={(e) => { e.stopPropagation(); setActiveProduct(productModals.nagelpistole) }}
                       >
-                        <MaterialIcon />
+                        <CartIcon />
                       </button>
                     )}
                     <img src={tool.icon} alt={tool.name} className="icon-image" />
@@ -486,7 +561,7 @@ export default function GuidePage({ module, onBack }) {
                         aria-label={`${item.name} ansehen`}
                         onClick={(e) => { e.stopPropagation(); setActiveProduct(productModals.materialC) }}
                       >
-                        <MaterialIcon />
+                        <CartIcon />
                       </button>
                     )}
                     <div className="material-icon-image-wrap">
