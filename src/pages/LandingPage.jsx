@@ -1,5 +1,6 @@
 import logo from "../assets/logos/biy_logo_main.png"
 import ModelViewer from '../components/ModelViewer'
+import { asset } from '../utils/asset'
 
 // SVG-Checkmark (kein Emoji) — Skill Rule: no-emoji-icons
 function CheckIcon() {
@@ -120,7 +121,7 @@ export default function LandingPage({ onStart }) {
               </div>
 
               <div className="lp-model-stage">
-                <ModelViewer modelPath="/models/wand_w4.glb" />
+                <ModelViewer modelPath={asset('/models/wand_w4.glb')} />
               </div>
 
               <div className="hero-metrics">

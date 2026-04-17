@@ -1,3 +1,5 @@
+import { asset } from '../utils/asset'
+
 export const modules = [
   {
     id: 'w4',
@@ -13,16 +15,16 @@ export const modules = [
     description:
       'Eine geführte Schritt-für-Schritt-Anleitung für den Aufbau einer Holzständerwand inklusive Vormontage, Beplankung, Befestigung, Dämmung und Sicherung.',
     tools: [
-      { name: 'Wasserwaage', icon: '/icons/wasserwaage.jpg' },
-      { name: 'Leiter', icon: '/icons/leiter.jpg' },
-      { name: 'Nagelpistole', icon: '/icons/nagelpistole.jpg' },
+      { name: 'Wasserwaage', icon: asset('/icons/wasserwaage.jpg') },
+      { name: 'Leiter', icon: asset('/icons/leiter.jpg') },
+      { name: 'Nagelpistole', icon: asset('/icons/nagelpistole.jpg') },
     ],
     materials: [
       {
         key: 'A',
         name: 'Schraube',
         dimension: '80 × 160 mm',
-        icon: '/icons/schraube_80_160.png',
+        icon: asset('/icons/schraube_80_160.png'),
         qty: 15,
         price: '0,70 €',
         total: '10,50 €',
@@ -31,7 +33,7 @@ export const modules = [
         key: 'B',
         name: 'Ständer',
         dimension: 'KVH C24',
-        icon: '/icons/stuetze.png',
+        icon: asset('/icons/stuetze.png'),
         qty: 5,
         price: '23,17 €',
         total: '115,85 €',
@@ -40,7 +42,7 @@ export const modules = [
         key: 'C',
         name: 'Rähm / Schwelle',
         dimension: 'KVH C24',
-        icon: '/icons/balken.png',
+        icon: asset('/icons/balken.png'),
         qty: 2,
         price: '23,17 €',
         total: '46,34 €',
@@ -51,7 +53,7 @@ export const modules = [
         key: 'D',
         name: 'OSB-Platte',
         dimension: 'Wandformat',
-        icon: '/icons/osb.png',
+        icon: asset('/icons/osb.png'),
         qty: 4,
         price: '26,97 €',
         total: '107,88 €',
@@ -60,7 +62,7 @@ export const modules = [
         key: 'E',
         name: 'Schraube',
         dimension: '35 × 40 mm',
-        icon: '/icons/schraube_35_40.png',
+        icon: asset('/icons/schraube_35_40.png'),
         qty: 68,
         price: '0,04 €',
         total: '2,72 €',
@@ -68,7 +70,7 @@ export const modules = [
       {
         key: 'F',
         name: 'Zugverankerung',
-        icon: '/icons/zugverankerung.png',
+        icon: asset('/icons/zugverankerung.png'),
         qty: 1,
         price: '7,42 €',
         total: '7,42 €',
@@ -77,7 +79,7 @@ export const modules = [
         key: 'G',
         name: 'Dämmplatte',
         dimension: 'Gefachformat',
-        icon: '/icons/daemmplatte.png',
+        icon: asset('/icons/daemmplatte.png'),
         qty: 4,
         price: '35,39 €',
         total: '141,56 €',
@@ -89,7 +91,7 @@ export const modules = [
         title: 'Ständerwand vormontieren',
         time: '20 min bei 2 Personen',
         focus: 'Montage',
-        image: '/steps/w4_step_01.png',
+        image: asset('/steps/w4_step_01.png'),
         materials: ['A', 'B', 'C'],
         text:
           'Die fünf Ständer werden zwischen Schwelle und Rähm liegend ausgerichtet. Halte das Achsmaß von 62,5 cm ein, richte alle Ständer rechtwinklig aus und setze pro Verbindungspunkt eine Schraube mittig in den Ständer.',
@@ -104,8 +106,8 @@ export const modules = [
         title: 'OSB-Beplankung montieren',
         time: '20 min bei 2 Personen',
         focus: 'Beplankung',
-        image: '/steps/w4_step_02.png',
-        video: '/render/w4_animation_02.mp4',
+        image: asset('/steps/w4_step_02.png'),
+        video: asset('/render/w4_animation_02.mp4'),
         materials: ['D', 'E'],
         text:
           'Die vorbereitete Wand wird mit zwei OSB-Platten beplankt. Beide Platten liegen stoßfrei nebeneinander, der Stoß liegt mittig auf einem Ständer. Die Verschraubung erfolgt im gleichmäßigen Raster.',
@@ -120,7 +122,7 @@ export const modules = [
         title: 'Wand aufrichten, befestigen und Zugverankerung setzen',
         time: '20 min bei 2 Personen',
         focus: 'Positionierung und Sicherung',
-        image: '/steps/w4_step_03_04.png',
+        image: asset('/steps/w4_step_03_04.png'),
         materials: ['A', 'C', 'F'],
         text:
           'Die vormontierte Wand wird aufgerichtet, lotrecht an der Außenkante des Bodens ausgerichtet und zunächst provisorisch gesichert. Danach wird pro Wandfeld eine Schraube mittig durch die Schwelle in den Boden gesetzt und die Zugverankerung am rechten Endständer sowie zusätzlich schräg im Boden befestigt.',
@@ -136,8 +138,8 @@ export const modules = [
         title: 'Dämmung einlegen',
         time: '20 min bei 2 Personen',
         focus: 'Ausbau',
-        image: '/steps/w4_step_05.png',
-        video: '/render/w4_animation_05.mp4',
+        image: asset('/steps/w4_step_05.png'),
+        video: asset('/render/w4_animation_05.mp4'),
         materials: ['G'],
         text:
           'Die Hohlräume zwischen den Ständern werden mit Dämmplatten spannungsfrei, aber formschlüssig ausgefüllt. Gleichzeitig bleibt Raum für Elektro, Wasser oder Heizungsinstallationen.',
@@ -151,7 +153,7 @@ export const modules = [
         title: 'Wandrückseite beplanken und sichern',
         time: '20 min bei 2 Personen',
         focus: 'Abschluss',
-        image: '/steps/w4_step_06.png',
+        image: asset('/steps/w4_step_06.png'),
         materials: ['D', 'E'],
         text:
           'Zum Abschluss wird die Rückseite analog zur Vorderseite mit zwei OSB-Platten beplankt. Wenn die Wand noch freisteht, muss sie temporär abgestützt werden.',
