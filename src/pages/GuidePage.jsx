@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -401,6 +401,45 @@ function ProductModal({ product, onClose }) {
   )
 }
 
+// ── Photo Lightbox ────────────────────────────────────────────────────────────
+
+function ZoomIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="8" />
+      <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
+    </svg>
+  )
+}
+
+function PhotoLightbox({ src, alt, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => e.key === 'Escape' && onClose()
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [onClose])
+
+  return (
+    <div
+      className="lb-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Foto vergrößert"
+    >
+      <button type="button" className="lb-close" onClick={onClose} aria-label="Schließen">×</button>
+      <div className="lb-img-wrap" onClick={(e) => e.stopPropagation()}>
+        <img src={src} alt={alt} className="lb-img" />
+      </div>
+      <span className="lb-hint">Pinch zum Zoomen · Tippe außerhalb zum Schließen</span>
+    </div>
+  )
+}
+
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function GuidePage({ module, onBack, onScroll }) {
@@ -413,6 +452,7 @@ export default function GuidePage({ module, onBack, onScroll }) {
   const [currentStepIndex, setCurrentStepIndex] = useState(-1)
   const [completedSteps, setCompletedSteps] = useState(new Set())
   const [activeVisualTab, setActiveVisualTab] = useState('photo')
+  const [lightboxSrc, setLightboxSrc] = useState(null)
 
   const actualSteps = module.steps
   const currentStep = currentStepIndex >= 0 ? actualSteps[currentStepIndex] : null
@@ -790,11 +830,19 @@ export default function GuidePage({ module, onBack, onScroll }) {
             {/* Visual Content */}
             <div className="gd-visual-content">
               {activeVisualTab === 'photo' && currentStep.image && (
-                <img
-                  src={currentStep.image}
-                  alt={`Schritt ${currentStep.no}: ${currentStep.title}`}
-                  className="gd-step-photo"
-                />
+                <button
+                  type="button"
+                  className="gd-photo-btn"
+                  onClick={() => setLightboxSrc(currentStep.image)}
+                  aria-label="Foto vergrößern"
+                >
+                  <img
+                    src={currentStep.image}
+                    alt={`Schritt ${currentStep.no}: ${currentStep.title}`}
+                    className="gd-step-photo"
+                  />
+                  <span className="gd-photo-zoom-hint"><ZoomIcon /> Vergrößern</span>
+                </button>
               )}
               {activeVisualTab === 'photo' && !currentStep.image && (
                 <div className="gd-no-media" role="status">
@@ -822,6 +870,15 @@ export default function GuidePage({ module, onBack, onScroll }) {
           </section>
 
         </div>
+      )}
+
+      {/* ── Photo Lightbox ─────────────────────────────── */}
+      {lightboxSrc && (
+        <PhotoLightbox
+          src={lightboxSrc}
+          alt={currentStep ? `Schritt ${currentStep.no}: ${currentStep.title}` : ''}
+          onClose={() => setLightboxSrc(null)}
+        />
       )}
 
       {/* ── Modals ─────────────────────────────────────── */}
