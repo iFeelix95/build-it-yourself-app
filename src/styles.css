@@ -135,8 +135,8 @@ img {
 }
 
 .topbar {
-  pointer-events: all;
   width: 100%;
+  padding: 14px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -145,12 +145,6 @@ img {
   background: #2C1A0E;
   backdrop-filter: blur(18px);
   box-shadow: var(--shadow-soft);
-  overflow: hidden;
-  position: relative;
-}
-
-.topbar--collapsed {
-  justify-content: center;
 }
 
 .brand-button {
