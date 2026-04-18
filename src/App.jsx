@@ -1,8 +1,34 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import GuidePage from './pages/GuidePage'
 import ImportTestPage from './pages/ImportTestPage'
 import LandingPage from './pages/LandingPage'
 import MenuPage from './pages/MenuPage'
+
+const COLLAPSE_AT = 120
+const EXPAND_AFTER = 80
+
+const navVariants = {
+  expanded: {
+    width: '100%',
+    paddingLeft: '18px',
+    paddingRight: '18px',
+    borderRadius: '14px',
+    transition: { type: 'spring', damping: 24, stiffness: 300 },
+  },
+  collapsed: {
+    width: '56px',
+    paddingLeft: '7px',
+    paddingRight: '7px',
+    borderRadius: '999px',
+    transition: { type: 'spring', damping: 24, stiffness: 300 },
+  },
+}
+
+const fadeOut = {
+  expanded: { opacity: 1, transition: { delay: 0.1, duration: 0.2 } },
+  collapsed: { opacity: 0, transition: { duration: 0.12 } },
+}
 
 function HouseLogo() {
   return (
@@ -21,6 +47,22 @@ export default function App() {
 
   const [screen, setScreen] = useState(getInitialScreen)
   const [selectedModule, setSelectedModule] = useState(null)
+  const [collapsed, setCollapsed] = useState(false)
+
+  const { scrollY } = useScroll()
+  const lastY = useRef(0)
+  const collapseY = useRef(0)
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const prev = lastY.current
+    if (!collapsed && latest > prev && latest > COLLAPSE_AT) {
+      setCollapsed(true)
+      collapseY.current = latest
+    } else if (collapsed && latest < prev && collapseY.current - latest > EXPAND_AFTER) {
+      setCollapsed(false)
+    }
+    lastY.current = latest
+  })
 
   const navigateTo = (nextScreen) => {
     setScreen(nextScreen)
@@ -35,17 +77,57 @@ export default function App() {
   return (
     <div className="app-shell">
       <div className="top-accent" />
-      <nav className="topbar">
-        <button className="brand-button" onClick={() => navigateTo('landing')}>
-          <HouseLogo />
-          <span>Build it yourself</span>
-        </button>
-        <div className="nav-actions">
-          <button className="text-btn" onClick={() => navigateTo('menu')}>Module</button>
-          <button className="text-btn" onClick={() => navigateTo('guide')} disabled={!selectedModule}>Anleitung</button>
-          <button className="text-btn" onClick={() => navigateTo('import-test')}>Import Test</button>
-        </div>
-      </nav>
+
+      {/* ── Sticky nav positioner ── */}
+      <div className="topbar-positioner">
+        <motion.nav
+          className="topbar"
+          animate={collapsed ? 'collapsed' : 'expanded'}
+          variants={navVariants}
+          onClick={() => collapsed && setCollapsed(false)}
+          whileHover={collapsed ? { scale: 1.07 } : {}}
+          whileTap={collapsed ? { scale: 0.93 } : {}}
+          style={{ cursor: collapsed ? 'pointer' : 'default' }}
+          aria-label="Hauptnavigation"
+        >
+          <button
+            className="brand-button"
+            onClick={(e) => { if (!collapsed) { e.stopPropagation(); navigateTo('landing') } }}
+            aria-label="Zur Startseite"
+            tabIndex={collapsed ? -1 : 0}
+          >
+            <HouseLogo />
+            <motion.span variants={fadeOut} style={{ whiteSpace: 'nowrap' }}>
+              Build it yourself
+            </motion.span>
+          </button>
+
+          <motion.div className="nav-actions" variants={fadeOut}>
+            <button
+              className="text-btn"
+              onClick={(e) => { e.stopPropagation(); navigateTo('menu') }}
+              tabIndex={collapsed ? -1 : 0}
+            >
+              Module
+            </button>
+            <button
+              className="text-btn"
+              onClick={(e) => { e.stopPropagation(); navigateTo('guide') }}
+              disabled={!selectedModule}
+              tabIndex={collapsed ? -1 : 0}
+            >
+              Anleitung
+            </button>
+            <button
+              className="text-btn"
+              onClick={(e) => { e.stopPropagation(); navigateTo('import-test') }}
+              tabIndex={collapsed ? -1 : 0}
+            >
+              Import Test
+            </button>
+          </motion.div>
+        </motion.nav>
+      </div>
 
       {screen === 'landing' && <LandingPage onStart={() => navigateTo('menu')} />}
       {screen === 'menu' && <MenuPage onOpenModule={openModule} />}

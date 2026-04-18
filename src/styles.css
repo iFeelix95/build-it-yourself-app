@@ -122,22 +122,32 @@ img {
   background: linear-gradient(90deg, #9A6118 0%, #C4832A 100%);
 }
 
-.topbar {
+.topbar-positioner {
   position: sticky;
   top: 14px;
   z-index: 40;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.topbar {
+  pointer-events: all;
+  width: 100%;
   padding: 14px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border: none;
   border-radius: 14px;
   background: #2C1A0E;
   backdrop-filter: blur(18px);
   box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  position: relative;
 }
 
 .brand-button {
@@ -1811,9 +1821,8 @@ th {
     padding: 0 14px 28px;
   }
 
-  .topbar {
-    flex-direction: column;
-    align-items: stretch;
+  .topbar-positioner {
+    padding: 0 8px;
   }
 
   .nav-actions {
