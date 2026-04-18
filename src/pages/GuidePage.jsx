@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -401,41 +401,107 @@ function ProductModal({ product, onClose }) {
   )
 }
 
-// ── Photo Lightbox ────────────────────────────────────────────────────────────
+// ── Pinch-Zoom Image ──────────────────────────────────────────────────────────
 
-function ZoomIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="11" cy="11" r="8" />
-      <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
-    </svg>
-  )
-}
+function PinchZoomImage({ src, alt }) {
+  const wrapRef = useRef(null)
+  const imgRef = useRef(null)
 
-function PhotoLightbox({ src, alt, onClose }) {
   useEffect(() => {
-    const onKey = (e) => e.key === 'Escape' && onClose()
-    document.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
+    const wrap = wrapRef.current
+    const img = imgRef.current
+    if (!wrap || !img) return
+
+    let scale = 1, tx = 0, ty = 0
+    let lastTap = 0
+    let pinchStartDist = 0, pinchStartScale = 1
+    let dragging = false
+    let dragStartX = 0, dragStartY = 0, dragTxStart = 0, dragTyStart = 0
+
+    function apply() {
+      img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`
     }
-  }, [onClose])
+
+    function clamp() {
+      const maxTx = Math.max(0, (scale - 1) * wrap.clientWidth / 2)
+      const maxTy = Math.max(0, (scale - 1) * wrap.clientHeight / 2)
+      tx = Math.max(-maxTx, Math.min(maxTx, tx))
+      ty = Math.max(-maxTy, Math.min(maxTy, ty))
+    }
+
+    function reset() { scale = 1; tx = 0; ty = 0; apply() }
+
+    function touchDist(t) {
+      const dx = t[0].clientX - t[1].clientX, dy = t[0].clientY - t[1].clientY
+      return Math.sqrt(dx * dx + dy * dy)
+    }
+
+    function onTouchStart(e) {
+      if (e.touches.length === 2) {
+        e.preventDefault()
+        pinchStartDist = touchDist(e.touches)
+        pinchStartScale = scale
+        dragging = false
+      } else if (e.touches.length === 1) {
+        const now = Date.now()
+        if (now - lastTap < 300) { reset(); lastTap = 0; return }
+        lastTap = now
+        if (scale > 1) {
+          dragging = true
+          dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY
+          dragTxStart = tx; dragTyStart = ty
+        }
+      }
+    }
+
+    function onTouchMove(e) {
+      if (e.touches.length === 2) {
+        e.preventDefault()
+        scale = Math.max(1, Math.min(5, pinchStartScale * (touchDist(e.touches) / pinchStartDist)))
+        clamp(); apply()
+      } else if (e.touches.length === 1 && dragging) {
+        e.preventDefault()
+        tx = dragTxStart + (e.touches[0].clientX - dragStartX)
+        ty = dragTyStart + (e.touches[0].clientY - dragStartY)
+        clamp(); apply()
+      }
+    }
+
+    function onTouchEnd(e) {
+      if (e.touches.length === 0) dragging = false
+      if (scale < 1) reset()
+    }
+
+    function onWheel(e) {
+      e.preventDefault()
+      scale = Math.max(1, Math.min(5, scale * (e.deltaY < 0 ? 1.1 : 1 / 1.1)))
+      if (scale === 1) { tx = 0; ty = 0 }
+      clamp(); apply()
+    }
+
+    wrap.addEventListener('touchstart', onTouchStart, { passive: false })
+    wrap.addEventListener('touchmove', onTouchMove, { passive: false })
+    wrap.addEventListener('touchend', onTouchEnd)
+    wrap.addEventListener('wheel', onWheel, { passive: false })
+    wrap.addEventListener('dblclick', reset)
+
+    return () => {
+      wrap.removeEventListener('touchstart', onTouchStart)
+      wrap.removeEventListener('touchmove', onTouchMove)
+      wrap.removeEventListener('touchend', onTouchEnd)
+      wrap.removeEventListener('wheel', onWheel)
+      wrap.removeEventListener('dblclick', reset)
+    }
+  }, [src])
+
+  useEffect(() => {
+    if (imgRef.current) imgRef.current.style.transform = 'translate(0px, 0px) scale(1)'
+  }, [src])
 
   return (
-    <div
-      className="lb-overlay"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Foto vergrößert"
-    >
-      <button type="button" className="lb-close" onClick={onClose} aria-label="Schließen">×</button>
-      <div className="lb-img-wrap" onClick={(e) => e.stopPropagation()}>
-        <img src={src} alt={alt} className="lb-img" />
-      </div>
-      <span className="lb-hint">Pinch zum Zoomen · Tippe außerhalb zum Schließen</span>
+    <div ref={wrapRef} className="pz-wrap">
+      <img ref={imgRef} src={src} alt={alt} className="pz-img" draggable={false} />
+      <span className="pz-hint">Pinch oder Scroll zum Zoomen · Doppeltippen zum Zurücksetzen</span>
     </div>
   )
 }
@@ -452,7 +518,6 @@ export default function GuidePage({ module, onBack, onScroll }) {
   const [currentStepIndex, setCurrentStepIndex] = useState(-1)
   const [completedSteps, setCompletedSteps] = useState(new Set())
   const [activeVisualTab, setActiveVisualTab] = useState('photo')
-  const [lightboxSrc, setLightboxSrc] = useState(null)
 
   const actualSteps = module.steps
   const currentStep = currentStepIndex >= 0 ? actualSteps[currentStepIndex] : null
@@ -830,19 +895,10 @@ export default function GuidePage({ module, onBack, onScroll }) {
             {/* Visual Content */}
             <div className="gd-visual-content">
               {activeVisualTab === 'photo' && currentStep.image && (
-                <button
-                  type="button"
-                  className="gd-photo-btn"
-                  onClick={() => setLightboxSrc(currentStep.image)}
-                  aria-label="Foto vergrößern"
-                >
-                  <img
-                    src={currentStep.image}
-                    alt={`Schritt ${currentStep.no}: ${currentStep.title}`}
-                    className="gd-step-photo"
-                  />
-                  <span className="gd-photo-zoom-hint"><ZoomIcon /> Vergrößern</span>
-                </button>
+                <PinchZoomImage
+                  src={currentStep.image}
+                  alt={`Schritt ${currentStep.no}: ${currentStep.title}`}
+                />
               )}
               {activeVisualTab === 'photo' && !currentStep.image && (
                 <div className="gd-no-media" role="status">
@@ -870,15 +926,6 @@ export default function GuidePage({ module, onBack, onScroll }) {
           </section>
 
         </div>
-      )}
-
-      {/* ── Photo Lightbox ─────────────────────────────── */}
-      {lightboxSrc && (
-        <PhotoLightbox
-          src={lightboxSrc}
-          alt={currentStep ? `Schritt ${currentStep.no}: ${currentStep.title}` : ''}
-          onClose={() => setLightboxSrc(null)}
-        />
       )}
 
       {/* ── Modals ─────────────────────────────────────── */}
