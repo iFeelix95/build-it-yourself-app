@@ -403,7 +403,7 @@ function ProductModal({ product, onClose }) {
 
 // ── Main Component ────────────────────────────────────────────────────────────
 
-export default function GuidePage({ module, onBack }) {
+export default function GuidePage({ module, onBack, onScroll }) {
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false)
   const [activeTrade, setActiveTrade] = useState('Elektro')
   const [selectedServiceSlots, setSelectedServiceSlots] = useState({
@@ -617,7 +617,7 @@ export default function GuidePage({ module, onBack }) {
             className="gd-instruction"
             aria-labelledby={`gd-step-title-${currentStepIndex}`}
           >
-            <div className="gd-instruction-inner">
+            <div className="gd-instruction-inner" onScroll={onScroll ? (e) => onScroll(e.currentTarget.scrollTop) : undefined}>
 
               {/* Step Hero */}
               <div className="gd-step-hero">

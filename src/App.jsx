@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import GuidePage from './pages/GuidePage'
 import ImportTestPage from './pages/ImportTestPage'
 import LandingPage from './pages/LandingPage'
@@ -48,21 +48,32 @@ export default function App() {
   const [screen, setScreen] = useState(getInitialScreen)
   const [selectedModule, setSelectedModule] = useState(null)
   const [collapsed, setCollapsed] = useState(false)
-
-  const { scrollY } = useScroll()
+  const collapsedRef = useRef(false)
   const lastY = useRef(0)
   const collapseY = useRef(0)
 
-  useMotionValueEvent(scrollY, 'change', (latest) => {
+  useEffect(() => {
+    const onScroll = () => handleScrollValue(window.scrollY)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  function handleScrollValue(latest) {
     const prev = lastY.current
-    if (!collapsed && latest > prev && latest > COLLAPSE_AT) {
+    if (!collapsedRef.current && latest > prev && latest > COLLAPSE_AT) {
+      collapsedRef.current = true
       setCollapsed(true)
       collapseY.current = latest
-    } else if (collapsed && latest < prev && collapseY.current - latest > EXPAND_AFTER) {
+    } else if (collapsedRef.current && latest < prev && collapseY.current - latest > EXPAND_AFTER) {
+      collapsedRef.current = false
       setCollapsed(false)
     }
     lastY.current = latest
-  })
+  }
+
+  function handleGuideScroll(scrollTop) {
+    handleScrollValue(scrollTop)
+  }
 
   const navigateTo = (nextScreen) => {
     setScreen(nextScreen)
@@ -84,7 +95,7 @@ export default function App() {
           className="topbar"
           animate={collapsed ? 'collapsed' : 'expanded'}
           variants={navVariants}
-          onClick={() => collapsed && setCollapsed(false)}
+          onClick={() => { if (collapsed) { collapsedRef.current = false; setCollapsed(false) } }}
           whileHover={collapsed ? { scale: 1.07 } : {}}
           whileTap={collapsed ? { scale: 0.93 } : {}}
           style={{ cursor: collapsed ? 'pointer' : 'default' }}
@@ -131,7 +142,7 @@ export default function App() {
 
       {screen === 'landing' && <LandingPage onStart={() => navigateTo('menu')} />}
       {screen === 'menu' && <MenuPage onOpenModule={openModule} />}
-      {screen === 'guide' && selectedModule && <GuidePage module={selectedModule} onBack={() => navigateTo('menu')} />}
+      {screen === 'guide' && selectedModule && <GuidePage module={selectedModule} onBack={() => navigateTo('menu')} onScroll={handleGuideScroll} />}
       {screen === 'guide' && !selectedModule && <MenuPage onOpenModule={openModule} />}
       {screen === 'import-test' && <ImportTestPage />}
     </div>
