@@ -14,6 +14,8 @@ const navVariants = {
     paddingLeft: '18px',
     paddingRight: '18px',
     borderRadius: '14px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
     transition: { type: 'spring', damping: 24, stiffness: 300 },
   },
   collapsed: {
@@ -21,13 +23,16 @@ const navVariants = {
     paddingLeft: '7px',
     paddingRight: '7px',
     borderRadius: '999px',
+    marginLeft: '0px',
+    marginRight: 'auto',
     transition: { type: 'spring', damping: 24, stiffness: 300 },
   },
 }
 
+// text + nav-actions: fade AND collapse their width so they take no space
 const fadeOut = {
-  expanded: { opacity: 1, transition: { delay: 0.1, duration: 0.2 } },
-  collapsed: { opacity: 0, transition: { duration: 0.12 } },
+  expanded: { opacity: 1, maxWidth: 600, transition: { delay: 0.08, duration: 0.2 } },
+  collapsed: { opacity: 0, maxWidth: 0, transition: { duration: 0.12 } },
 }
 
 function HouseLogo() {
@@ -92,7 +97,7 @@ export default function App() {
       {/* ── Sticky nav positioner ── */}
       <div className="topbar-positioner">
         <motion.nav
-          className="topbar"
+          className={`topbar${collapsed ? ' topbar--collapsed' : ''}`}
           animate={collapsed ? 'collapsed' : 'expanded'}
           variants={navVariants}
           onClick={() => { if (collapsed) { collapsedRef.current = false; setCollapsed(false) } }}
@@ -108,12 +113,12 @@ export default function App() {
             tabIndex={collapsed ? -1 : 0}
           >
             <HouseLogo />
-            <motion.span variants={fadeOut} style={{ whiteSpace: 'nowrap' }}>
+            <motion.span variants={fadeOut} style={{ whiteSpace: 'nowrap', overflow: 'hidden', display: 'inline-block' }}>
               Build it yourself
             </motion.span>
           </button>
 
-          <motion.div className="nav-actions" variants={fadeOut}>
+          <motion.div className="nav-actions" variants={fadeOut} style={{ overflow: 'hidden' }}>
             <button
               className="text-btn"
               onClick={(e) => { e.stopPropagation(); navigateTo('menu') }}

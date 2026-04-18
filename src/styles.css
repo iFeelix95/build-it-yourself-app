@@ -150,6 +150,10 @@ img {
   position: relative;
 }
 
+.topbar--collapsed {
+  justify-content: center;
+}
+
 .brand-button {
   display: inline-flex;
   align-items: center;
