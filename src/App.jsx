@@ -8,31 +8,36 @@ import MenuPage from './pages/MenuPage'
 const COLLAPSE_AT = 120
 const EXPAND_AFTER = 80
 
+const SPRING = { type: 'tween', duration: 0.55, ease: [0.4, 0, 0.2, 1] }
+
 const navVariants = {
   expanded: {
     width: '100%',
+    paddingTop: '14px',
+    paddingBottom: '14px',
     paddingLeft: '18px',
     paddingRight: '18px',
     borderRadius: '14px',
     marginLeft: 'auto',
     marginRight: 'auto',
-    transition: { type: 'spring', damping: 24, stiffness: 300 },
+    transition: SPRING,
   },
   collapsed: {
     width: '56px',
+    paddingTop: '7px',
+    paddingBottom: '7px',
     paddingLeft: '7px',
     paddingRight: '7px',
     borderRadius: '999px',
     marginLeft: '0px',
     marginRight: 'auto',
-    transition: { type: 'spring', damping: 24, stiffness: 300 },
+    transition: SPRING,
   },
 }
 
-// text + nav-actions: fade AND collapse their width so they take no space
 const fadeOut = {
-  expanded: { opacity: 1, maxWidth: 600, transition: { delay: 0.08, duration: 0.2 } },
-  collapsed: { opacity: 0, maxWidth: 0, transition: { duration: 0.12 } },
+  expanded: { opacity: 1, maxWidth: 600, transition: { duration: 0.3, delay: 0.15 } },
+  collapsed: { opacity: 0, maxWidth: 0, transition: { duration: 0.18 } },
 }
 
 function HouseLogo() {
