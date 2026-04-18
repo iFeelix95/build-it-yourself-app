@@ -137,7 +137,6 @@ img {
 .topbar {
   pointer-events: all;
   width: 100%;
-  padding: 14px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -103,6 +103,7 @@ export default function App() {
       <div className="topbar-positioner">
         <motion.nav
           className={`topbar${collapsed ? ' topbar--collapsed' : ''}`}
+          initial="expanded"
           animate={collapsed ? 'collapsed' : 'expanded'}
           variants={navVariants}
           onClick={() => { if (collapsed) { collapsedRef.current = false; setCollapsed(false) } }}
